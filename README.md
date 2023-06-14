@@ -1,2 +1,2 @@
-# Aplikacja_internetowa_do_analizy_duzych_zbiorow_danych_astronomicznych
+# Aplikacja internetowa do analizy dużych zbiorów danych astronomicznych
 Temat pracy magisterskiej polegający na stworzeniu aplikacji internetowej, która będzie wykorzystana do analizy dużych zbiorów danych z dziedziny astronomii
