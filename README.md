@@ -13,7 +13,7 @@ W tym repozytorium powstaje aplikacja internetowa, która umożliwi analizę dan
 ## Technologie jakie zostaną użyte do pracy
 
 - Front-end: [React.js](https://react.dev/)
-- Back-end: [Flask]([https://www.djangoproject.com/](https://flask.palletsprojects.com/en/3.0.x/))
+- Back-end: [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 - Bazy danych: [PostgreSQL](https://www.postgresql.org/)
 - UX/UI: [Figma](https://www.figma.com/)
 
