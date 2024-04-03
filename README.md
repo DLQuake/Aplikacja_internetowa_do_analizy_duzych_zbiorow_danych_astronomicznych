@@ -28,6 +28,6 @@ W folderze dokumentacja znajduję sie plik Microsoft Word, lecz z czasem sie poj
 Można pobrać repozytorium na dwa sposoby:
 
 * ```
-  git clone https://github.com/DLQuake/AstroAppAnalyzer.git
+  git clone https://github.com/DLQuake/Weather-Dashboard.git
   ```
 * [Download ZIP](https://github.com/DLQuake/AstroAppAnalyzer/archive/refs/heads/main.zip)
