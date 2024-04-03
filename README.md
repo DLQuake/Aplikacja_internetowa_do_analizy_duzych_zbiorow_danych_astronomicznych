@@ -1,6 +1,5 @@
-# Aplikacja internetowa do analizy dużych zbiorów danych astronomicznych
-Temat pracy magisterskiej polegający na stworzeniu aplikacji internetowej, która będzie wykorzystana do analizy dużych zbiorów danych z dziedziny astronomii.
-Aplikacja będzie sie nazywać AstroAppAnalyzer
+# Aplikacja internetowa do analizy dużych zbiorów danych pogodowych
+Temat pracy magisterskiej polegający na stworzeniu aplikacji internetowej, która będzie wykorzystana do analizy dużych zbiorów danych pogodowych.
 
 ## Spis treści
  * [Krótki opis repozytorium](#krótki-opis-repozytorium)
@@ -9,12 +8,12 @@ Aplikacja będzie sie nazywać AstroAppAnalyzer
  * [Pobranie i klonowanie](#pobranie-i-klonowanie)
 
 ## Krótki opis repozytorium
-W tym repozytorium powstaje aplikacja internetowa, która umożliwi analizę danych astronomicznych poprzez wykorzystanie dostępny narzędzi oraz umożliwi wizualizacje danych za pomocą wykresów.
+W tym repozytorium powstaje aplikacja internetowa, która umożliwi analizę danych pogodowych poprzez wykorzystanie dostępny narzędzi oraz umożliwi wizualizacje danych za pomocą wykresów.
 
 ## Technologie jakie zostaną użyte do pracy
 
 - Front-end: [React.js](https://react.dev/)
-- Back-end: [Django](https://www.djangoproject.com/)
+- Back-end: [Flask]([https://www.djangoproject.com/](https://flask.palletsprojects.com/en/3.0.x/))
 - Bazy danych: [PostgreSQL](https://www.postgresql.org/)
 - UX/UI: [Figma](https://www.figma.com/)
 
