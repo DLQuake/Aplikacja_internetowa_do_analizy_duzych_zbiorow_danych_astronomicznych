@@ -1,4 +1,4 @@
-# Aplikacja internetowa do analizy dużych zbiorów danych pogodowych
+# Aplikacja internetowa do analizy danych pogodowych
 Temat pracy magisterskiej polegający na stworzeniu aplikacji internetowej, która będzie wykorzystana do analizy dużych zbiorów danych pogodowych.
 
 ## Spis treści
