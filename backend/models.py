@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -8,16 +9,25 @@ class Weather(db.Model):
     conditions = db.Column(db.String(100))
 
 
-class User(db.Model):
+class Uzytkownicy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(64))
-    last_name = db.Column(db.String(64))
+    imie = db.Column(db.String(64))
+    nazwisko = db.Column(db.String(64))
     email = db.Column(db.String(120), index=True, unique=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+    login = db.Column(db.String(64), index=True, unique=True)
+    haslo = db.Column(db.String(255))
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.haslo = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return check_password_hash(self.haslo, password)
+
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return str(self.id)
+
+    def is_authenticated(self):
+        return True

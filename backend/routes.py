@@ -1,5 +1,7 @@
 from flask import jsonify, request
-from models import Weather, db, User
+from models import Weather, db, Uzytkownicy
+from flask_login import login_user, logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def init_routes(app):
     @app.route('/api/weather')
@@ -16,49 +18,45 @@ def init_routes(app):
     @app.route('/api/register', methods=['POST'])
     def register():
         data = request.json
-        if not data:
-            return jsonify({"message": "No data provided"}), 400
-
-        username = data.get('username')
+        imie = data.get('imie')
+        nazwisko = data.get('nazwisko')
         email = data.get('email')
-        password = data.get('password')
-        conf_password = data.get('confPassword')
+        login = data.get('login')
+        haslo = data.get('haslo')
+        conf_haslo = data.get('confPassword')
 
-        if not username or not email or not password or not conf_password:
-            return jsonify({"message": "Brakujące wymagane pola"}), 400
+        if haslo != conf_haslo:
+            return jsonify({'message': 'Hasło i potwierdzenie hasła nie są zgodne'}), 400
 
-        if password != conf_password:
-            return jsonify({"message": "Hasła nie są zgodne"}), 400
-
-        existing_user = User.query.filter_by(username=username).first()
+        existing_user = Uzytkownicy.query.filter((Uzytkownicy.email == email) | (Uzytkownicy.login == login)).first()
         if existing_user:
-            return jsonify({"message": "Użytkownik już istnieje"}), 400
+            return jsonify({'message': 'Użytkownik o podanym adresie e-mail lub nazwie użytkownika już istnieje'}), 400
 
-        existing_email = User.query.filter_by(email=email).first()
-        if existing_email:
-            return jsonify({"message": "Email już zarejestrowany"}), 400
+        hashed_password = generate_password_hash(haslo)
 
-        new_user = User(username=username, email=email)
-        new_user.set_password(password)
+        new_user = Uzytkownicy(imie=imie, nazwisko=nazwisko, email=email, login=login, haslo=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({"message": "Użytkownik zarejestrowany pomyślnie"}), 201
+        return jsonify({'message': 'Pomyślnie zarejestrowano użytkownika'}), 201
 
     @app.route('/api/login', methods=['POST'])
     def login():
         data = request.json
-        if not data:
-            return jsonify({"message": "Brak danych"}), 400
+        login = data.get('login')
+        haslo = data.get('haslo')
 
-        username = data.get('username')
-        password = data.get('password')
+        user = Uzytkownicy.query.filter_by(login=login).first()
 
-        if not username or not password:
-            return jsonify({"message": "Brakująca nazwa użytkownika lub hasło"}), 400
+        if user and check_password_hash(user.haslo, haslo):
+            login_user(user)
+            return jsonify({'message': 'Pomyślnie zalogowano'}), 200
+        else:
+            return jsonify({'message': 'Niepoprawny login lub hasło'}), 401
 
-        user = User.query.filter_by(username=username).first()
-        if not user or not user.check_password(password):
-            return jsonify({"message": "Nieprawidłowa nazwa użytkownika lub hasło"}), 401
-
-        return jsonify({"message": "Logowanie powiodło się"}), 200
+    @app.route('/api/logout', methods=['DELETE'])
+    @login_required
+    def logout():
+        # Wyloguj użytkownika
+        logout_user()
+        return jsonify({'message': 'Pomyślnie wylogowano'}), 200
