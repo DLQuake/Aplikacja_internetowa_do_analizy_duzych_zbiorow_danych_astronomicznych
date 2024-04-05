@@ -1,24 +1,33 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './pages/Home';
-import About from './pages/About';
-import RegisterPage from './pages/RegisterPage';
-import LoginPage from './pages/LoginPage';
-import ContactPage from './pages/ContactPage';
-import UserDashboardPage from './pages/UserDashboardPage';
+import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+import EditUser from "./pages/EditUser";
+import HomePage from "./pages/HomePage";
+import Contact from "./pages/Contact";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import AddTasks from "./pages/AddTasks";
+import Tasks from "./pages/Tasks";
+import EditTasks from "./pages/EditTasks";
 
 function App() {
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/about" element={<About />} />
-				<Route path="/register" element={<RegisterPage />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/contact" element={<ContactPage />} />
-				<Route path="/user" element={<UserDashboardPage />} />
-			</Routes>
-		</BrowserRouter>
+		<div>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<HomePage />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/contact" element={<Contact />} />
+					<Route path="/users" element={<Users />} />
+					<Route path="/users/edit/:id" element={<EditUser />} />
+					<Route path="/tasks" element={<Tasks />} />
+					<Route path="/tasks/add" element={<AddTasks />} />
+					<Route path="/tasks/edit/:id" element={<EditTasks />} />
+				</Routes>
+			</BrowserRouter>
+		</div>
 	);
 }
 
