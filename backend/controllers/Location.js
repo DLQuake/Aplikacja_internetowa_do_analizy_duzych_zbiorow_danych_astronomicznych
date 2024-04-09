@@ -24,7 +24,7 @@ export const getLocationById = async (req, res) => {
     }
 }
 
-export const getLocationDataToDB = async (req, res) => {
+export const getLocationDataFromAPIToDB = async (req, res) => {
     try {
         const name = req.params.city;
 
