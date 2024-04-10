@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { IoPerson, IoLibrary, IoHome, IoLogOut, IoAddCircle, IoMail } from "react-icons/io5";
+import { IoPerson, IoHome, IoLogOut, IoMail, IoLocationSharp, IoCopySharp, IoCloudySharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
 
@@ -26,8 +26,13 @@ const Sidebar = () => {
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to={"/tasks"}>
-							<IoLibrary /> Tasks
+						<NavLink to={"/historydata"}>
+							<IoCopySharp /> History Data
+						</NavLink>
+					</li>
+					<li>
+						<NavLink to={"/forecastweather"}>
+							<IoCloudySharp /> Forecast Weather
 						</NavLink>
 					</li>
 				</ul>
@@ -40,17 +45,17 @@ const Sidebar = () => {
 									<IoPerson /> Users
 								</NavLink>
 							</li>
+							<li>
+								<NavLink to={"/locations"}>
+									<IoLocationSharp /> Locations
+								</NavLink>
+							</li>
 						</ul>
 					</div>
 				)}
 				<div>
 					<p className="menu-label">User</p>
 					<ul className="menu-list">
-						<li>
-							<NavLink to={"/tasks/add"}>
-								<IoAddCircle /> Add new task
-							</NavLink>
-						</li>
 						<li>
 							<NavLink to={"/contact"}>
 								<IoMail /> Contact

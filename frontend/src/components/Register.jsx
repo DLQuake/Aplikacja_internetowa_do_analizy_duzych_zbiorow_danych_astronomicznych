@@ -17,7 +17,7 @@ const Register = () => {
 
     useEffect(() => {
         if (user || isSuccess) {
-            navigate("/dashboard");
+            navigate("/login");
         }
         dispatch(reset());
     }, [user, isSuccess, dispatch, navigate]);

@@ -6,9 +6,9 @@ const NavbarHome = () => {
     return (
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="/">
+                <Link class="navbar-item" href="/">
                     <div class="title">LOGO</div>
-                </a>
+                </Link>
 
                 <a href="#" role="button" className={`navbar-burger ${burgerActive ? "is-active" : ""}`}
                     aria-label="menu" aria-expanded="false"
@@ -23,6 +23,7 @@ const NavbarHome = () => {
             <div id="navbarBasicExample" className={`navbar-menu ${burgerActive ? "is-active" : ""}`}>
                 <div class="navbar-start">
                     <Link to="/" class="navbar-item">Home Page</Link>
+                    <Link to="/aboutus" class="navbar-item">About Us</Link>
                 </div>
 
                 <div class="navbar-end">

@@ -62,7 +62,7 @@ const FormEditUser = () => {
 								<div className="control has-icons-left">
 									<input type="text" className="input" value={imie} onChange={(e) => setImie(e.target.value)} placeholder="Name" />
 									<span class="icon is-small is-left">
-										<i class="fa-solid fa-person"></i>
+										<i class="fa-solid fa-user"></i>
 									</span>
 								</div>
 							</div>
@@ -71,7 +71,7 @@ const FormEditUser = () => {
 								<div className="control has-icons-left">
 									<input type="text" className="input" value={nazwisko} onChange={(e) => setNazwisko(e.target.value)} placeholder="Surname" />
 									<span class="icon is-small is-left">
-										<i class="fa-solid fa-person"></i>
+										<i class="fa-solid fa-user"></i>
 									</span>
 								</div>
 							</div>

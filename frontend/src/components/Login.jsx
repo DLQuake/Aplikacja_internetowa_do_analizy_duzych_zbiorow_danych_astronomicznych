@@ -28,7 +28,7 @@ const Login = () => {
 	return (
 		<div>
 			<NavbarHome></NavbarHome>
-			<section className="hero is-fullheight is-fullwidth has-background-link">
+			<section className="hero is-fullheight is-fullwidth">
 				<div className="hero-body">
 					<div className="container">
 						<div className="columns is-centered">
