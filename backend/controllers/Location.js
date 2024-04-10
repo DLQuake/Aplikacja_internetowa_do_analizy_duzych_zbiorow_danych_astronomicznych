@@ -14,7 +14,7 @@ export const getLocationById = async (req, res) => {
     try {
         const location = await Location.findOne({
             where: {
-                city: req.params.city
+                uuid: req.params.id
             }
         });
         if (!location) return res.status(404).json({ msg: "Brak danych w bazie dla podanego ID lokalizacji" });
@@ -63,3 +63,22 @@ export const getLocationDataFromAPIToDB = async (req, res) => {
         res.status(500).json({ error: 'Wystąpił błąd serwera podczas pobierania danych z API' });
     }
 };
+
+export const deleteLocation = async(req, res) =>{
+    const location = await Location.findOne({
+        where: {
+            uuid: req.params.id
+        }
+    });
+    if(!location) return res.status(404).json({msg: "Lokalizacja nie znaleziona"});
+    try {
+        await Location.destroy({
+            where:{
+                id: location.id
+            }
+        });
+        res.status(200).json({msg: "Lokalizacja usunięta"});
+    } catch (error) {
+        res.status(400).json({msg: error.message});
+    }
+}

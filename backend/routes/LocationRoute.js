@@ -1,5 +1,6 @@
 import express from "express";
 import {
+    deleteLocation,
     getAllLocations,
     getLocationById,
     getLocationDataFromAPIToDB
@@ -8,7 +9,8 @@ import {
 const router = express.Router();
 
 router.get('/locations', getAllLocations);
-router.get('/locations/:city', getLocationById);
+router.get('/locations/:id', getLocationById);
 router.get('/location/:city', getLocationDataFromAPIToDB);
+router.delete('/locations/:id', deleteLocation);
 
 export default router;
