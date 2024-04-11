@@ -8,15 +8,14 @@ Temat pracy magisterskiej polegający na stworzeniu aplikacji internetowej, któ
  * [Pobranie i klonowanie](#pobranie-i-klonowanie)
 
 ## Krótki opis repozytorium
+
 W tym repozytorium powstaje aplikacja internetowa, która umożliwi analizę danych pogodowych poprzez wykorzystanie dostępny narzędzi oraz umożliwi wizualizacje danych za pomocą wykresów.
 
 ## Technologie jakie zostaną użyte do pracy
 
 - Front-end: [React.js](https://react.dev/)
-- Back-end: [Flask](https://flask.palletsprojects.com/en/3.0.x/)
+- Back-end: [Express.js](https://expressjs.com/) oraz [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 - Bazy danych: [PostgreSQL](https://www.postgresql.org/)
-- UX/UI: [Figma](https://www.figma.com/)
-
 
 ## Dokumentacja
 
