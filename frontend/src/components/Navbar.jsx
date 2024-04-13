@@ -36,7 +36,7 @@ const Navbar = () => {
 				<div id="navbarBasicExample" className="navbar-menu">
 					<div className="navbar-end">
 						<div className="navbar-item">
-							<strong>{user && user.role}</strong>: {user && user.imie} {user && user.nazwisko}
+							Dzień dobry &nbsp; <strong>{user && user.role}</strong>
 						</div>
 						<div className="navbar-item">
 							<div className="buttons">
