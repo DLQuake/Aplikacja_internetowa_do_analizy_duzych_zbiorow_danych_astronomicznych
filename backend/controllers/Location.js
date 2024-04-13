@@ -3,7 +3,9 @@ import Location from "../models/LocationModel.js";
 
 export const getAllLocations = async (req, res) => {
     try {
-        const locations = await Location.findAll();
+        const locations = await Location.findAll({
+            attributes: ['uuid', 'city', "country", "latitude", "longitude"]
+        });
         res.status(200).json(locations);
     } catch (error) {
         res.status(500).json({ msg: error.message });
@@ -13,6 +15,7 @@ export const getAllLocations = async (req, res) => {
 export const getLocationById = async (req, res) => {
     try {
         const location = await Location.findOne({
+            attributes: ['uuid', 'city', "country", "latitude", "longitude"],
             where: {
                 uuid: req.params.id
             }
