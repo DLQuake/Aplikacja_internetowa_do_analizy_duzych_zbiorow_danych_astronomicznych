@@ -50,7 +50,7 @@ const WeatherData = db.define('weatherdata', {
         }
     },
     windDirection: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
