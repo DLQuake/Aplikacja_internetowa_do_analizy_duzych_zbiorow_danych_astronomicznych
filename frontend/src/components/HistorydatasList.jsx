@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import moment from 'moment';
 
 const HistorydatasList = () => {
-    const [locations, setLocations] = useState([]);
+    const [weatherdatas, setWeatherdatas] = useState([]);
     const [cityName, setCityName] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     useEffect(() => {
-        getLocations();
+        getWeatherdata();
     }, []);
 
-    const getLocations = async () => {
-        const response = await axios.get("http://localhost:5000/locations");
-        setLocations(response.data);
+    const getWeatherdata = async () => {
+        const response = await axios.get("http://localhost:5000/weatherdatas");
+        setWeatherdatas(response.data);
     };
 
-    const deleteLocations = async (locationId) => {
-        await axios.delete(`http://localhost:5000/locations/${locationId}`);
-        getLocations();
-    };
-
-    const FindLocation = async (locationId) => {
-        if (!cityName) return;
-        await axios.get(`http://localhost:5000/locations/${locationId}`);
-        setCityName("");
-        getLocations();
+    const searchWeatherData = async () => {
+        if (cityName) {
+            const response = await axios.get(`http://localhost:5000/weatherdata/location/${cityName}`);
+            setWeatherdatas(response.data);
+        }
+        else {
+            getWeatherdata();
+        }
     };
 
     return (
@@ -41,7 +42,23 @@ const HistorydatasList = () => {
                     />
                 </div>
                 <div className="control">
-                    <button className="button is-info" onClick={FindLocation(locations.uuid)}>Fint Location</button>
+                    <input
+                        className="input"
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                    />
+                </div>
+                <div className="control">
+                    <input
+                        className="input"
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                    />
+                </div>
+                <div className="control">
+                    <button className="button is-link" onClick={searchWeatherData}>Search</button>
                 </div>
             </div>
             <table className="table is-striped is-fullwidth">
@@ -49,24 +66,29 @@ const HistorydatasList = () => {
                     <tr>
                         <th>ID</th>
                         <th>City</th>
-                        <th>Country</th>
-                        <th>latitude</th>
-                        <th>Longitude</th>
+                        <th>Date</th>
+                        <th>Temperature (°C)</th>
+                        <th>Humidity (%)</th>
+                        <th>Precipitation (mm)</th>
+                        <th>Wind Speed (Km/h)</th>
+                        <th>Wind Direction (Degrees)</th>
                         <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {locations.map((locations, index) => (
-                        <tr key={locations.uuid}>
+                    {weatherdatas.map((weatherdatas, index) => (
+                        <tr key={weatherdatas.uuid}>
                             <td>{index + 1}</td>
-                            <td>{locations.city}</td>
-                            <td>{locations.country}</td>
-                            <td>{locations.latitude}</td>
-                            <td>{locations.longitude}</td>
+                            <td>{weatherdatas.location.city}</td>
+                            <td>{moment(weatherdatas.date).format("DD.MM.YYYY | HH:mm")}</td>
+                            <td>{weatherdatas.temperature} °C</td>
+                            <td>{weatherdatas.humidity} %</td>
+                            <td>{weatherdatas.precipitation} mm</td>
+                            <td>{weatherdatas.windSpeed} Km/h</td>
+                            <td>{weatherdatas.windDirection} Degrees</td>
                             <td>
                                 <div className="Option">
-                                    {/* <Link to={`/tasks/edit/${locations.uuid}`} className="button is-small is-info">Edit</Link> */}
-                                    <button onClick={() => deleteLocations(locations.uuid)} className="button is-small is-danger">Delete</button>
+                                    <Link to={`/tasks/edit/${weatherdatas.uuid}`} className="button is-small is-info">Edit</Link>
                                 </div>
                             </td>
                         </tr>
