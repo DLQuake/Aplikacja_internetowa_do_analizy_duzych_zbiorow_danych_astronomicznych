@@ -71,7 +71,7 @@ export const updateUser = async(req, res) =>{
                 id: user.id
             }
         });
-        res.status(200).json({msg: "Dane użytkownika Zauktalizowane"});
+        res.status(200).json({msg: "Dane użytkownika Zaktualizowane"});
     } catch (error) {
         res.status(400).json({msg: error.message});
     }
