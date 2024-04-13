@@ -1,34 +1,93 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import moment from "moment";
 
 const Welcome = () => {
-	const { user } = useSelector((state) => state.auth);
+	const [locations, setLocations] = useState([]);
+	const [selectedLocation, setSelectedLocation] = useState("");
+	const [weatherData, setWeatherData] = useState([]);
+	const [showWeatherData, setShowWeatherData] = useState(false);
+
+	useEffect(() => {
+		fetchLocations();
+	}, []);
+
+	const fetchLocations = async () => {
+		try {
+			const response = await axios.get("http://localhost:5000/locations");
+			setLocations(response.data);
+		} catch (error) {
+			console.error("Błąd podczas pobierania lokalizacji:", error);
+		}
+	};
+
+	const handleLocationChange = (event) => {
+		setSelectedLocation(event.target.value);
+	};
+
+	const fetchWeatherData = async () => {
+		try {
+			const response = await axios.get(`http://localhost:5000/weatherdata/location/${selectedLocation}`);
+			setWeatherData(response.data);
+			setShowWeatherData(true);
+		} catch (error) {
+			console.error("Błąd podczas pobierania danych pogodowych:", error);
+		}
+	};
+
 	return (
-		<section className="hero">
-			<div className="hero-body">
-				<div className="container">
-					<div className="column is-10">
-						<div className="box">
-							<h1 className="title has-text-centered">Dashboard</h1>
-							<h2 className="subtitle has-text-centered">
-								Hello user <strong>{user && user.imie} {user && user.nazwisko}</strong>
-								<br />
-								User role: {user && user.role}
-							</h2>
-
-							<div className="content">
-								<p>After logging in to the main panel of the TODO application, you will have access to the full list of your tasks. On the home page, you'll see a list of all the tasks you've created, along with their titles, due dates, and priorities.</p>
-								<p>You can easily manage your tasks, add new ones, modify existing ones or delete obsolete tasks. You will find all these options in an intuitive navigation panel.</p>
-								<p>The navigation panel also allows you to filter tasks by priority, due date and category. This will allow you to find the most important tasks faster and focus on their implementation.</p>
-								<p>In the TODO app, you will also find the option to add notes to your tasks and the ability to mark tasks as completed, which will allow you to track the progress of your tasks.</p>
-								<p>If you are looking for a simple and effective tool to organize and manage your tasks, the TODO application is the perfect solution for you. Sign in today and start managing your time and tasks more effectively.</p>
-							</div>
-
-						</div>
+		<div>
+			<h1 className="title">Weather Dashboard</h1>
+			<label className="label">Select a Location:</label>
+			<div className="field has-addons">
+				<div className="control">
+					<div className="select">
+						<select onChange={handleLocationChange}>
+							<option value="">Select Location</option>
+							{locations.map((location) => (
+								<option key={location.id} value={location.city}>{location.city}</option>
+							))}
+						</select>
 					</div>
 				</div>
+				<div className="control">
+					<button className="button is-link" onClick={fetchWeatherData}>Search</button>
+				</div>
 			</div>
-		</section>
+
+			{showWeatherData && (
+				<div className="mt-5">
+					<table className="table is-striped is-fullwidth">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>City</th>
+								<th>Date</th>
+								<th>Temperature (°C)</th>
+								<th>Humidity (%)</th>
+								<th>Precipitation (mm)</th>
+								<th>Wind Speed (Km/h)</th>
+								<th>Wind Direction (Degrees)</th>
+							</tr>
+						</thead>
+						<tbody>
+							{weatherData.map((weatherData, index) => (
+								<tr key={weatherData.uuid}>
+									<td>{index + 1}</td>
+									<td>{weatherData.location.city}</td>
+									<td>{moment(weatherData.date).format("DD.MM.YYYY | HH:mm")}</td>
+									<td>{weatherData.temperature} °C</td>
+									<td>{weatherData.humidity} %</td>
+									<td>{weatherData.precipitation} mm</td>
+									<td>{weatherData.windSpeed} Km/h</td>
+									<td>{weatherData.windDirection} Degrees</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			)}
+		</div>
 	);
 };
 
