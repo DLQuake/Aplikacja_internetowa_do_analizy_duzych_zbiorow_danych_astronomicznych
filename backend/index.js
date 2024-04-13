@@ -8,8 +8,7 @@ import UserRoute from './routes/UserRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
 import WeatherDataRoute from "./routes/WeatherDataRoute.js";
 import LocationRoute from "./routes/LocationRoute.js";
-import { spawn } from 'child_process';
-
+import cron from 'node-cron';
 
 dotenv.config();
 
@@ -22,7 +21,7 @@ const store = new sessionStore({
 });
 
 // (async()=>{
-    // await db.sync();
+// await db.sync();
 // })();
 
 app.use(session({
@@ -46,6 +45,10 @@ app.use(LocationRoute);
 app.use(WeatherDataRoute);
 
 // store.sync();
+
+// cron.schedule(" */2 * * * * *", () => {
+//     console.log("A cron job that runs every 2 seconds");
+// });
 
 app.listen(process.env.APP_PORT, () => {
     console.log('Server up and running on http://localhost:%d/', process.env.APP_PORT);
