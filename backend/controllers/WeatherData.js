@@ -108,7 +108,6 @@ export const getHistoryWeatherData = async (req, res) => {
 
 export const saveWeatherDatatoDB = async (req, res) => {
     try {
-        // Pobierz wszystkie rekordy z tabeli Location
         const locations = await Location.findAll();
 
         const today = new Date();
@@ -117,14 +116,12 @@ export const saveWeatherDatatoDB = async (req, res) => {
         const endDate = twoDaysAgo.toISOString().split('T')[0];
 
         for (const location of locations) {
-            // Pobierz archiwalne dane z API na podstawie szerokości i długości geograficznej lokalizacji
             const latitude = location.latitude;
             const longitude = location.longitude;
             const startDate = '2024-04-01';
             const archiveApiUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${latitude}&longitude=${longitude}&start_date=${startDate}&end_date=${endDate}&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_100m,wind_direction_100m`;
             const archiveApiResponse = await axios.get(archiveApiUrl);
 
-            // Sprawdź, czy otrzymano poprawną odpowiedź z API archiwalnym
             if (archiveApiResponse.status === 200) {
                 const archiveWeatherData = archiveApiResponse.data;
 
@@ -156,11 +153,9 @@ export const saveWeatherDatatoDB = async (req, res) => {
                 console.error('Błąd podczas pobierania danych pogodowych dla lokalizacji (API archiwalne):', location.city);
             }
 
-            // Pobierz prognozowane dane z API na podstawie szerokości i długości geograficznej lokalizacji
             const forecastApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_120m,wind_direction_120m&past_days=1&forecast_days=1`;
             const forecastApiResponse = await axios.get(forecastApiUrl);
 
-            // Sprawdź, czy otrzymano poprawną odpowiedź z prognozowanego API
             if (forecastApiResponse.status === 200) {
                 const forecastWeatherData = forecastApiResponse.data;
 
@@ -197,6 +192,55 @@ export const saveWeatherDatatoDB = async (req, res) => {
     } catch (error) {
         console.error('Błąd podczas pobierania i zapisywania danych pogodowych:', error);
         res.status(500).json({ error: "Wystąpił błąd podczas przetwarzania żądania" });
+    }
+};
+
+export const saveTodaytWeatherData = async () => {
+    try {
+        const locations = await Location.findAll();
+        const today = new Date().toISOString().split('T')[0];
+
+        for (const location of locations) {
+            const latitude = location.latitude;
+            const longitude = location.longitude;
+            const forecastApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_120m,wind_direction_120m&forecast_days=1`;
+            const forecastApiResponse = await axios.get(forecastApiUrl);
+
+            if (forecastApiResponse.status === 200) {
+                const forecastWeatherData = forecastApiResponse.data;
+
+                if (forecastWeatherData.hourly && forecastWeatherData.hourly.time && forecastWeatherData.hourly.time.length > 0) {
+                    const todayIndex = forecastWeatherData.hourly.time.findIndex(time => time.split('T')[0] === today);
+                    if (todayIndex !== -1) {
+                        const existingRecordToday = await WeatherData.findOne({
+                            where: {
+                                locationId: location.id,
+                                date: forecastWeatherData.hourly.time[todayIndex]
+                            }
+                        });
+                        if (!existingRecordToday) {
+                            await WeatherData.create({
+                                date: forecastWeatherData.hourly.time[todayIndex],
+                                temperature: forecastWeatherData.hourly.temperature_2m[todayIndex],
+                                humidity: forecastWeatherData.hourly.relative_humidity_2m[todayIndex],
+                                precipitation: forecastWeatherData.hourly.precipitation[todayIndex],
+                                windSpeed: forecastWeatherData.hourly.wind_speed_120m[todayIndex],
+                                windDirection: forecastWeatherData.hourly.wind_direction_120m[todayIndex],
+                                locationId: location.id
+                            });
+                        }
+                    } else {
+                        console.error('Brak danych pogodowych na dzisiaj dla lokalizacji:', location.city);
+                    }
+                } else {
+                    console.error('Brak danych pogodowych dla lokalizacji (API prognozowane):', location.city);
+                }
+            } else {
+                console.error('Błąd podczas pobierania danych pogodowych dla lokalizacji (API prognozowane):', location.city);
+            }
+        }
+    } catch (error) {
+        console.error('Błąd podczas pobierania i zapisywania danych pogodowych:', error);
     }
 };
 
