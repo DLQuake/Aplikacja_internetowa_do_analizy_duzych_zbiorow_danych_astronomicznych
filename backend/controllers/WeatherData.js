@@ -37,74 +37,51 @@ export const getWeatherdataById = async (req, res) => {
     }
 }
 
-export const getWeatherdataByLocationName = async (req, res) => {
+export const getFilteredWeatherdata = async (req, res) => {
     try {
-        const location = await Location.findOne({
-            where: {
-                city: req.params.cityName,
-            }
-        });
-        if (!location) return res.status(404).json({ msg: "Brak danych w bazie dla podanej nazwy lokalizacji" });
+        const { city, startDate, endDate } = req.query;
 
-        const weather = await WeatherData.findAll({
+        let whereClause = {};
+
+        if (city) {
+            const location = await Location.findOne({
+                where: {
+                    city: city,
+                },
+            });
+            if (location) {
+                whereClause.locationId = location.id;
+            } else {
+                return res.status(404).json({ msg: "Brak danych w bazie dla podanej nazwy lokalizacji" });
+            }
+        }
+
+        if (startDate && endDate) {
+            whereClause.date = {
+                [Op.between]: [startDate, endDate],
+            };
+        } else if (startDate || endDate) {
+            return res.status(400).json({ msg: "Podano tylko jeden zakres dat" });
+        }
+
+        const weatherdata = await WeatherData.findAll({
             attributes: ['uuid', 'date', 'temperature', 'humidity', 'precipitation', 'windSpeed', 'windDirection'],
-            where: {
-                locationId: location.id,
-            },
+            where: whereClause,
             include: [{
                 model: Location,
                 attributes: ['uuid', 'city', "country", "latitude", "longitude"]
             }]
         });
 
-        if (!weather) return res.status(404).json({ msg: "Brak danych pogodowych w bazie dla podanej lokalizacji" });
-
-        res.status(200).json(weather);
-    } catch (error) {
-        res.status(500).json({ msg: error.message });
-    }
-}
-
-export const getHistoryWeatherData = async (req, res) => {
-    try {
-        const { city, startDate, endDate } = req.query;
-
-        if (!startDate || !endDate) {
-            return res.status(400).json({ msg: "Nie podano zakresu dat w zapytaniu" });
-        }
-
-        const location = await Location.findOne({
-            where: {
-                city: city
-            }
-        });
-        if (!location) {
-            return res.status(404).json({ error: 'Nie znaleziono danych dla podanej lokalizacji' });
-        }
-
-        const weatherdata = await WeatherData.findAll({
-            attributes: ['uuid', 'date', 'temperature', 'humidity', 'precipitation', 'windSpeed', 'windDirection'],
-            where: {
-                date: {
-                    [Op.between]: [startDate, endDate],
-                },
-                locationId: location.id
-            },
-            include: [{
-                model: Location,
-                attributes: ['uuid', 'city', 'country', 'latitude', 'longitude']
-            }]
-        });
-
         if (weatherdata.length === 0) {
-            return res.status(404).json({ msg: "Brak danych pogodowych dla podanego zakresu dat" });
+            return res.status(404).json({ msg: "Brak danych pogodowych dla podanych kryteriów" });
         }
 
         res.status(200).json(weatherdata);
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
-}
+};
 
 export const saveWeatherDatatoDB = async (req, res) => {
     try {
