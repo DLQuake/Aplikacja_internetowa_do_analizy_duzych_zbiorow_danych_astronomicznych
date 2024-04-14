@@ -9,6 +9,7 @@ import AuthRoute from './routes/AuthRoute.js';
 import WeatherDataRoute from "./routes/WeatherDataRoute.js";
 import LocationRoute from "./routes/LocationRoute.js";
 import cron from 'node-cron';
+import { saveTodaytWeatherData } from './controllers/WeatherData.js';
 
 dotenv.config();
 
@@ -46,9 +47,14 @@ app.use(WeatherDataRoute);
 
 // store.sync();
 
-// cron.schedule(" */2 * * * * *", () => {
-//     console.log("A cron job that runs every 2 seconds");
-// });
+cron.schedule('14 12 * * *', async () => {
+    try {
+        await saveTodaytWeatherData();
+        console.log('Pobrano i zapisano dane z API forecast.');
+    } catch (error) {
+        console.error('Błąd podczas pobierania i zapisywania danych z API forecast:', error);
+    }
+});
 
 app.listen(process.env.APP_PORT, () => {
     console.log('Server up and running on http://localhost:%d/', process.env.APP_PORT);
