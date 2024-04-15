@@ -172,7 +172,7 @@ export const saveWeatherDatatoDB = async (req, res) => {
     }
 };
 
-export const saveTodaytWeatherData = async () => {
+export const saveTodayWeatherData = async () => {
     try {
         const locations = await Location.findAll();
         const today = new Date().toISOString().split('T')[0];
@@ -187,27 +187,30 @@ export const saveTodaytWeatherData = async () => {
                 const forecastWeatherData = forecastApiResponse.data;
 
                 if (forecastWeatherData.hourly && forecastWeatherData.hourly.time && forecastWeatherData.hourly.time.length > 0) {
-                    const todayIndex = forecastWeatherData.hourly.time.findIndex(time => time.split('T')[0] === today);
-                    if (todayIndex !== -1) {
-                        const existingRecordToday = await WeatherData.findOne({
-                            where: {
-                                locationId: location.id,
-                                date: forecastWeatherData.hourly.time[todayIndex]
-                            }
-                        });
-                        if (!existingRecordToday) {
-                            await WeatherData.create({
-                                date: forecastWeatherData.hourly.time[todayIndex],
-                                temperature: forecastWeatherData.hourly.temperature_2m[todayIndex],
-                                humidity: forecastWeatherData.hourly.relative_humidity_2m[todayIndex],
-                                precipitation: forecastWeatherData.hourly.precipitation[todayIndex],
-                                windSpeed: forecastWeatherData.hourly.wind_speed_120m[todayIndex],
-                                windDirection: forecastWeatherData.hourly.wind_direction_120m[todayIndex],
-                                locationId: location.id
+                    for (let i = 0; i < forecastWeatherData.hourly.time.length; i++) {
+                        const time = forecastWeatherData.hourly.time[i];
+                        const date = time.split('T')[0];
+
+                        if (date === today) {
+                            const existingRecord = await WeatherData.findOne({
+                                where: {
+                                    locationId: location.id,
+                                    date: time
+                                }
                             });
+
+                            if (!existingRecord) {
+                                await WeatherData.create({
+                                    date: time,
+                                    temperature: forecastWeatherData.hourly.temperature_2m[i],
+                                    humidity: forecastWeatherData.hourly.relative_humidity_2m[i],
+                                    precipitation: forecastWeatherData.hourly.precipitation[i],
+                                    windSpeed: forecastWeatherData.hourly.wind_speed_120m[i],
+                                    windDirection: forecastWeatherData.hourly.wind_direction_120m[i],
+                                    locationId: location.id
+                                });
+                            }
                         }
-                    } else {
-                        console.error('Brak danych pogodowych na dzisiaj dla lokalizacji:', location.city);
                     }
                 } else {
                     console.error('Brak danych pogodowych dla lokalizacji (API prognozowane):', location.city);
