@@ -26,12 +26,12 @@ const Sidebar = () => {
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to={"/historydata"}>
+						<NavLink to={"/dashboard/historydata"}>
 							<IoCopySharp /> History Data
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to={"/forecastweather"}>
+						<NavLink to={"/dashboard/forecastweather"}>
 							<IoCloudySharp /> Forecast Weather
 						</NavLink>
 					</li>
@@ -41,12 +41,12 @@ const Sidebar = () => {
 						<p className="menu-label">Admin</p>
 						<ul className="menu-list">
 							<li>
-								<NavLink to={"/users"}>
+								<NavLink to={"/dashboard/users"}>
 									<IoPerson /> Users
 								</NavLink>
 							</li>
 							<li>
-								<NavLink to={"/locations"}>
+								<NavLink to={"/dashboard/locations"}>
 									<IoLocationSharp /> Locations
 								</NavLink>
 							</li>
@@ -57,7 +57,7 @@ const Sidebar = () => {
 					<p className="menu-label">User</p>
 					<ul className="menu-list">
 						<li>
-							<NavLink to={"/contact"}>
+							<NavLink to={"/dashboard/contact"}>
 								<IoMail /> Contact
 							</NavLink>
 						</li>
