@@ -20,11 +20,11 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/dashboard" element={<Dashboard />} />
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/users" element={<Users />} />
-					<Route path="/users/edit/:id" element={<EditUser />} />
-					<Route path="/locations" element={<Locations />} />
-					<Route path="/historydata" element={<Historydatas />} />
+					<Route path="/dashboard/contact" element={<Contact />} />
+					<Route path="/dashboard/users" element={<Users />} />
+					<Route path="/dashboard/users/edit/:id" element={<EditUser />} />
+					<Route path="/dashboard/locations" element={<Locations />} />
+					<Route path="/dashboard/historydata" element={<Historydatas />} />
 				</Routes>
 			</BrowserRouter>
 		</div>
