@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import Locations from "./pages/Locations";
 import AboutUs from "./pages/AboutUs";
 import Historydatas from "./pages/Historydatas";
+import ContactHome from "./pages/ContactHome";
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 					<Route path="/aboutus" element={<AboutUs />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
+					<Route path="/contact" element={<ContactHome />} />
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/dashboard/contact" element={<Contact />} />
 					<Route path="/dashboard/users" element={<Users />} />
