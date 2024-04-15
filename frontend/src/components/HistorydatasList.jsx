@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import moment from 'moment';
@@ -9,58 +9,45 @@ const HistorydatasList = () => {
     const [selectedCity, setSelectedCity] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [initialWeatherdatas, setInitialWeatherdatas] = useState([]);
+    const tableRef = useRef(null);
 
     useEffect(() => {
         getWeatherdata();
     }, []);
 
-    useEffect(() => {
-        setWeatherdatas(initialWeatherdatas.filter(weatherdata => {
-            if (!selectedCity && (!startDate || !endDate)) return true;
-            const isCityMatch = !selectedCity || weatherdata.location.city === selectedCity;
-            const isDateMatch = (!startDate || moment(weatherdata.date) >= moment(startDate)) &&
-                (!endDate || moment(weatherdata.date) <= moment(endDate));
-            return isCityMatch && isDateMatch;
-        }));
-    }, [selectedCity, startDate, endDate, initialWeatherdatas]);
-
     const getWeatherdata = async () => {
-        const response = await axios.get("http://localhost:5000/weatherdata/all");
-        setWeatherdatas(response.data.sort((a, b) => {
-            if (a.location.city === b.location.city) {
-                return new Date(a.date) - new Date(b.date);
-            }
-            return a.location.city > b.location.city ? 1 : -1;
-        }));
-        setInitialWeatherdatas(response.data);
-        const uniqueCities = [...new Set(response.data.map(weatherdata => weatherdata.location.city))];
-        setCities(uniqueCities);
-    };
-
-    const searchWeatherData = async () => {
-        if (!selectedCity && (!startDate || !endDate)) {
-            setWeatherdatas(initialWeatherdatas);
-            return;
-        }
-
-        const query = {};
-        if (selectedCity) {
-            query.city = selectedCity;
-        }
-        if (startDate && endDate) {
-            query.startDate = startDate;
-            query.endDate = endDate;
-        }
-
         try {
-            const response = await axios.get("http://localhost:5000/weatherdata/filter ", { params: query });
+            const response = await axios.get("http://localhost:5000/weatherdata/all");
             setWeatherdatas(response.data.sort((a, b) => {
                 if (a.location.city === b.location.city) {
                     return new Date(a.date) - new Date(b.date);
                 }
                 return a.location.city > b.location.city ? 1 : -1;
             }));
+            const uniqueCities = [...new Set(response.data.map(weatherdata => weatherdata.location.city))];
+            setCities(uniqueCities);
+        } catch (error) {
+            console.error("Wystąpił błąd podczas pobierania danych:", error);
+        }
+    };
+
+    const searchWeatherData = async () => {
+        try {
+            const response = await axios.get("http://localhost:5000/weatherdata/filter", {
+                params: {
+                    city: selectedCity,
+                    startDate: startDate,
+                    endDate: endDate
+                }
+            });
+            setWeatherdatas(response.data.sort((a, b) => {
+                if (a.location.city === b.location.city) {
+                    return new Date(a.date) - new Date(b.date);
+                }
+                return a.location.city > b.location.city ? 1 : -1;
+            }));
+            // Przewiń do tabeli po kliknięciu przycisku
+            tableRef.current.scrollIntoView({ behavior: "smooth" });
         } catch (error) {
             console.error("Wystąpił błąd podczas pobierania danych:", error);
         }
@@ -69,8 +56,8 @@ const HistorydatasList = () => {
     return (
         <div>
             <h1 className="title">History data list</h1>
-            <label className="label">Select City</label>
-            <div className="field has-addons">
+            <div className="field">
+                <label className="label">Select City:</label>
                 <div className="control">
                     <div className="select is-fullwidth">
                         <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
@@ -82,8 +69,9 @@ const HistorydatasList = () => {
                     </div>
                 </div>
             </div>
-            <label className="label">Select <strong>Start Date</strong> and <strong>End Date</strong> </label>
+            <label className="label">Select Date Range:</label>
             <div className="field has-addons">
+                <div className="label">From &nbsp;</div>
                 <div className="control">
                     <input
                         className="input"
@@ -92,6 +80,7 @@ const HistorydatasList = () => {
                         onChange={(e) => setStartDate(e.target.value)}
                     />
                 </div>
+                <div className="label">&nbsp; To &nbsp;</div>
                 <div className="control">
                     <input
                         className="input"
@@ -100,11 +89,13 @@ const HistorydatasList = () => {
                         onChange={(e) => setEndDate(e.target.value)}
                     />
                 </div>
+            </div>
+            <div className="field">
                 <div className="control">
                     <button className="button is-link" onClick={searchWeatherData}>Search</button>
                 </div>
             </div>
-            <table className="table is-striped is-fullwidth">
+            <table className="table is-striped is-fullwidth" ref={tableRef}>
                 <thead>
                     <tr>
                         <th>ID</th>
