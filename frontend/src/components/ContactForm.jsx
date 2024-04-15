@@ -10,7 +10,7 @@ const ContactForm = () => {
         emailjs.sendForm('service_ximyohd', 'template_qd00s0n', form.current, 'PYZQAnBlBCWe5HnPD')
             .then((result) => {
                 console.log(result.text);
-                alert("Wiadomość została wysłana");
+                alert("The message was sent");
             }, (error) => {
                 console.log(error.text);
             });
