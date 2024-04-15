@@ -65,7 +65,6 @@ const LocationsList = () => {
                             <td>{locations.longitude}</td>
                             <td>
                                 <div className="Option">
-                                    {/* <Link to={`/tasks/edit/${locations.uuid}`} className="button is-small is-info">Edit</Link> */}
                                     <button onClick={() => deleteLocations(locations.uuid)} className="button is-small is-danger">Delete</button>
                                 </div>
                             </td>

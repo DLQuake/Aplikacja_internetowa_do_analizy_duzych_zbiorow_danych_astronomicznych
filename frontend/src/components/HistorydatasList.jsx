@@ -46,7 +46,6 @@ const HistorydatasList = () => {
                 }
                 return a.location.city > b.location.city ? 1 : -1;
             }));
-            // Przewiń do tabeli po kliknięciu przycisku
             tableRef.current.scrollIntoView({ behavior: "smooth" });
         } catch (error) {
             console.error("Wystąpił błąd podczas pobierania danych:", error);
