@@ -10,6 +10,7 @@ import Locations from "./pages/Locations";
 import AboutUs from "./pages/AboutUs";
 import Historydatas from "./pages/Historydatas";
 import ContactHome from "./pages/ContactHome";
+import ForecastWeather from "./pages/ForecastWeatherPage";
 
 function App() {
 	return (
@@ -27,6 +28,7 @@ function App() {
 					<Route path="/dashboard/users/edit/:id" element={<EditUser />} />
 					<Route path="/dashboard/locations" element={<Locations />} />
 					<Route path="/dashboard/historydata" element={<Historydatas />} />
+					<Route path="/dashboard/forecastweather" element={<ForecastWeather />} />
 				</Routes>
 			</BrowserRouter>
 		</div>
