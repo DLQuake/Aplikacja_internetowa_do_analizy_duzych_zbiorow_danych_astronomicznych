@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/weatherdata/all', getAllweatherdata);
 router.get('/weatherdata/one/:id', getWeatherdataById);
 router.get('/weatherdata/filter', getFilteredWeatherdata);
-router.get("/weatherdata/forecast/:cityName", ForecastWeather);
+router.get("/weatherdata/forecast", ForecastWeather);
 router.get("/weatherdata", saveWeatherDatatoDB);
 
 export default router;
