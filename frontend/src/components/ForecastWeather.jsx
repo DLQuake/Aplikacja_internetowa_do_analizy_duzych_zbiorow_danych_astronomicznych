@@ -23,7 +23,7 @@ const ForecastWeather = () => {
     const precipitationChartRef = useRef();
     const windSpeedChartRef = useRef();
     const windDirectionChartRef = useRef();
-    const [forecastDays, setForecastDays] = useState(1); // Domyślnie prognozujemy na 1 dzień
+    const [forecastDays, setForecastDays] = useState(1);
 
     useEffect(() => {
         fetchLocations();
@@ -70,18 +70,12 @@ const ForecastWeather = () => {
     };
 
     const generateChartData = (data) => {
-        const labels = data.map((weather) => moment(weather.date).format("HH:mm"));
-        const temperatureData = data.map((weather) => weather.temperature);
-        const humidityData = data.map((weather) => weather.humidity);
-        const precipitationData = data.map((weather) => weather.precipitation);
-        const windSpeedData = data.map((weather) => weather.windSpeed);
-        const windDirectionData = data.map((weather) => weather.windDirection);
-
-        setTemperatureData(temperatureData);
-        setHumidityData(humidityData);
-        setPrecipitationData(precipitationData);
-        setWindSpeedData(windSpeedData);
-        setWindDirectionData(windDirectionData);
+        const labels = data.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm"));
+        setTemperatureData(data.forecast_temperature);
+        setHumidityData(data.forecast_humidity);
+        setPrecipitationData(data.forecast_precipitation);
+        setWindSpeedData(data.forecast_wind_speed);
+        setWindDirectionData(data.forecast_wind_direction);
     };
 
     const chartOptions = {
@@ -151,7 +145,7 @@ const ForecastWeather = () => {
             </div>
             <div className="field">
                 <div className="control">
-                    <button className="button is-link" onClick={fetchWeatherData}>Search</button>
+                    <button className="button is-link" onClick={fetchWeatherData}>Predict forecast weather</button>
                 </div>
             </div>
 
@@ -163,100 +157,84 @@ const ForecastWeather = () => {
                         <button className="button is-link">Download report</button>
                     </div>
                     <h1 className="title has-text-centered">Report from forecasting weather for "{selectedLocation}"</h1>
-                    <div className="columns">
-                        <div className="column">
-                            <h2>Temperature</h2>
-                            <Line ref={temperatureChartRef} data={{
-                                labels: weatherData.map((weather) => moment(weather.date).format("HH:mm")),
-                                datasets: [{
-                                    label: 'Temperature (°C)',
-                                    data: temperatureData,
-                                    borderColor: 'rgb(255, 99, 132)',
-                                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                                    fill: true
-                                }]
-                            }} options={chartOptions} />
-                        </div>
-                        <div className="column">
-                            <h2>Humidity</h2>
-                            <Line ref={humidityChartRef} data={{
-                                labels: weatherData.map((weather) => moment(weather.date).format("HH:mm")),
-                                datasets: [{
-                                    label: 'Humidity (%)',
-                                    data: humidityData,
-                                    borderColor: 'rgb(54, 162, 235)',
-                                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                                    fill: true
-                                }]
-                            }} options={chartOptions} />
-                        </div>
-                        <div className="column">
-                            <h2>Precipitation</h2>
-                            <Bar ref={precipitationChartRef} data={{
-                                labels: weatherData.map((weather) => moment(weather.date).format("HH:mm")),
-                                datasets: [{
-                                    label: 'Precipitation (mm)',
-                                    data: precipitationData,
-                                    borderColor: 'rgb(75, 192, 192)',
-                                    backgroundColor: 'rgba(75, 192, 192, 1)',
-                                    fill: true
-                                }]
-                            }} options={chartOptions} />
-                        </div>
-                    </div>
-                    <div className="columns">
-                        <div className="column">
-                            <h2>Wind Speed</h2>
-                            <Line ref={windSpeedChartRef} data={{
-                                labels: weatherData.map((weather) => moment(weather.date).format("HH:mm")),
-                                datasets: [{
-                                    label: 'Wind Speed (m/s)',
-                                    data: windSpeedData,
-                                    borderColor: 'rgb(255, 159, 64)',
-                                    backgroundColor: 'rgba(255, 159, 64, 0.1)',
-                                    fill: true
-                                }]
-                            }} options={chartOptions} />
-                        </div>
-                        <div className="column">
-                            <h2>Wind Direction</h2>
-                            <Bar ref={windDirectionChartRef} data={{
-                                labels: weatherData.map((weather) => moment(weather.date).format("HH:mm")),
-                                datasets: [{
-                                    label: 'Wind Direction (°)',
-                                    data: windDirectionData,
-                                    borderColor: 'rgb(153, 102, 255)',
-                                    backgroundColor: 'rgba(153, 102, 255, 1)',
-                                    fill: true
-                                }]
-                            }} options={chartOptions} />
-                        </div>
-                    </div>
+                    <h2>Temperature</h2>
+                    <Line ref={temperatureChartRef} data={{
+                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        datasets: [{
+                            label: 'Temperature (°C)',
+                            data: temperatureData,
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                            fill: true
+                        }]
+                    }} options={chartOptions} />
+                    <h2>Humidity</h2>
+                    <Line ref={humidityChartRef} data={{
+                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        datasets: [{
+                            label: 'Humidity (%)',
+                            data: humidityData,
+                            borderColor: 'rgb(54, 162, 235)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                            fill: true
+                        }]
+                    }} options={chartOptions} />
+                    <h2>Precipitation</h2>
+                    <Bar ref={precipitationChartRef} data={{
+                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        datasets: [{
+                            label: 'Precipitation (mm)',
+                            data: precipitationData,
+                            borderColor: 'rgb(75, 192, 192)',
+                            backgroundColor: 'rgba(75, 192, 192, 1)',
+                            fill: true
+                        }]
+                    }} options={chartOptions} />
+                    <h2>Wind Speed</h2>
+                    <Line ref={windSpeedChartRef} data={{
+                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        datasets: [{
+                            label: 'Wind Speed (m/s)',
+                            data: windSpeedData,
+                            borderColor: 'rgb(255, 159, 64)',
+                            backgroundColor: 'rgba(255, 159, 64, 0.1)',
+                            fill: true
+                        }]
+                    }} options={chartOptions} />
+                    <h2>Wind Direction</h2>
+                    <Bar ref={windDirectionChartRef} data={{
+                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        datasets: [{
+                            label: 'Wind Direction (°)',
+                            data: windDirectionData,
+                            borderColor: 'rgb(153, 102, 255)',
+                            backgroundColor: 'rgba(153, 102, 255, 1)',
+                            fill: true
+                        }]
+                    }} options={chartOptions} />
                     <div className="mt-5">
                         <table className="table is-striped is-fullwidth">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>City</th>
                                     <th>Date</th>
                                     <th>Temperature (°C)</th>
                                     <th>Humidity (%)</th>
                                     <th>Precipitation (mm)</th>
-                                    <th>Wind Speed (Km/h)</th>
+                                    <th>Wind Speed (m/s)</th>
                                     <th>Wind Direction</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {weatherData.map((weatherData, index) => (
-                                    <tr key={weatherData.uuid}>
+                                {weatherData.future_dates.map((date, index) => (
+                                    <tr key={index + 1}>
                                         <td>{index + 1}</td>
-                                        <td>{weatherData.location.city}</td>
-                                        <td>{moment(weatherData.date).format("DD.MM.YYYY | HH:mm")}</td>
-                                        <td>{weatherData.temperature} °C</td>
-                                        <td>{weatherData.humidity} %</td>
-                                        <td>{weatherData.precipitation} mm</td>
-                                        <td>{weatherData.windSpeed} Km/h</td>
-                                        <td>{getWindDirection(weatherData.windDirection)}</td>
+                                        <td>{moment(date).format("DD.MM.YYYY | HH:mm")}</td>
+                                        <td>{temperatureData[index]} °C</td>
+                                        <td>{humidityData[index]} %</td>
+                                        <td>{precipitationData[index]} mm</td>
+                                        <td>{windSpeedData[index]} m/s</td>
+                                        <td>{getWindDirection(windDirectionData[index])}</td>
                                     </tr>
                                 ))}
                             </tbody>
