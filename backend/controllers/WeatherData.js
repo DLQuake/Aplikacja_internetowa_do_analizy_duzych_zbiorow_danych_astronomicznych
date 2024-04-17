@@ -226,8 +226,9 @@ export const saveTodayWeatherData = async () => {
 
 export const ForecastWeather = async (req, res) => {
     try {
-        const cityName = req.params.cityName;
-        const response = await axios.get(`http://localhost:5001/forecast_weather?cityName=${cityName}`);
+        const city = req.query.city;
+        const days = req.query.days || 1;
+        const response = await axios.get(`http://localhost:5001/forecast_weather?city=${city}&days=${days}`);
         if (response.status === 200) {
             res.status(200).json(response.data);
         } else {
