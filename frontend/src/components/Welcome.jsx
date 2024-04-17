@@ -39,11 +39,11 @@ const Welcome = () => {
 
     const handleLocationChange = (event) => {
         setSelectedLocation(event.target.value);
-        setShowWeatherData(false); // Ukryj wykresy podczas zmiany lokalizacji
+        setShowWeatherData(false);
     };
 
     const fetchWeatherData = async () => {
-        if (!selectedLocation) return; // Nie pobieraj danych, jeśli nie wybrano lokalizacji
+        if (!selectedLocation) return;
 
         setLoading(true);
         try {
@@ -102,6 +102,26 @@ const Welcome = () => {
                 },
             },
         },
+    };
+
+    const getWindDirection = (degrees) => {
+        if (degrees >= 349 || degrees < 11) return "N";
+        else if (degrees >= 12 && degrees < 33) return "NNE";
+        else if (degrees >= 34 && degrees < 56) return "NE";
+        else if (degrees >= 57 && degrees < 78) return "ENE";
+        else if (degrees >= 79 && degrees < 101) return "E";
+        else if (degrees >= 102 && degrees < 123) return "ESE";
+        else if (degrees >= 124 && degrees < 146) return "SE";
+        else if (degrees >= 147 && degrees < 168) return "SSE";
+        else if (degrees >= 169 && degrees < 191) return "S";
+        else if (degrees >= 192 && degrees < 213) return "SSW";
+        else if (degrees >= 214 && degrees < 236) return "SW";
+        else if (degrees >= 237 && degrees < 258) return "WSW";
+        else if (degrees >= 259 && degrees < 281) return "W";
+        else if (degrees >= 282 && degrees < 303) return "WNW";
+        else if (degrees >= 304 && degrees < 326) return "NW";
+        else if (degrees >= 326 && degrees < 348) return "NNW";
+        else return "N";
     };
 
     return (
@@ -185,13 +205,13 @@ const Welcome = () => {
                         </div>
                         <div className="column">
                             <h2>Wind Direction</h2>
-                            <Line ref={windDirectionChartRef} data={{
+                            <Bar ref={windDirectionChartRef} data={{
                                 labels: weatherData.map((weather) => moment(weather.date).format("HH:mm")),
                                 datasets: [{
                                     label: 'Wind Direction (°)',
                                     data: windDirectionData,
                                     borderColor: 'rgb(153, 102, 255)',
-                                    backgroundColor: 'rgba(153, 102, 255, 0.1)',
+                                    backgroundColor: 'rgba(153, 102, 255, 1)',
                                     fill: true
                                 }]
                             }} options={chartOptions} />
@@ -208,7 +228,7 @@ const Welcome = () => {
                                     <th>Humidity (%)</th>
                                     <th>Precipitation (mm)</th>
                                     <th>Wind Speed (Km/h)</th>
-                                    <th>Wind Direction (Degrees)</th>
+                                    <th>Wind Direction</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -221,7 +241,7 @@ const Welcome = () => {
                                         <td>{weatherData.humidity} %</td>
                                         <td>{weatherData.precipitation} mm</td>
                                         <td>{weatherData.windSpeed} Km/h</td>
-                                        <td>{weatherData.windDirection} Degrees</td>
+                                        <td>{getWindDirection(weatherData.windDirection)}</td>
                                     </tr>
                                 ))}
                             </tbody>
