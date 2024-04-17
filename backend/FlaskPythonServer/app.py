@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import requests
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 import numpy as np
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -28,6 +28,12 @@ class Location(db.Model):
     createdAt = db.Column(db.DateTime)
     updatedAt = db.Column(db.DateTime)
 
+def train_model(time, data):
+    model = RandomForestRegressor()
+    X = np.array([(date - time[0]).total_seconds() / (60 * 60) for date in time]).reshape(-1, 1)
+    model.fit(X, data)
+    return model
+
 @app.route('/forecast_weather', methods=['GET'])
 def forecast_weather():
     try:
@@ -43,7 +49,7 @@ def forecast_weather():
             latitude = location.latitude
             longitude = location.longitude
 
-            url = f'https://archive-api.open-meteo.com/v1/archive?latitude={latitude}&longitude={longitude}&start_date=2024-03-01&end_date=2024-04-07&hourly=temperature_2m'
+            url = f'https://archive-api.open-meteo.com/v1/archive?latitude={latitude}&longitude={longitude}&start_date=2024-03-01&end_date=2024-04-07&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_100m,wind_direction_100m'
 
             response = requests.get(url)
 
@@ -51,21 +57,35 @@ def forecast_weather():
                 weather_data = response.json()
                 time = np.array([datetime.strptime(date, '%Y-%m-%dT%H:%M') for date in weather_data['hourly']['time']])
                 temperature_2m = np.array(weather_data['hourly']['temperature_2m'])
+                relative_humidity_2m = np.array(weather_data['hourly']['relative_humidity_2m'])
+                precipitation = np.array(weather_data['hourly']['precipitation'])
+                wind_speed_100m = np.array(weather_data['hourly']['wind_speed_100m'])
+                wind_direction_100m = np.array(weather_data['hourly']['wind_direction_100m'])
 
-                model = LinearRegression()
-                # Przekształcenie daty do formatu z godziną od 00:00 do 23:00
-                X = np.array([(date - time[0]).total_seconds() / (60 * 60) for date in time]).reshape(-1, 1)
-                model.fit(X, temperature_2m)
-                # Generowanie przyszłych dat w formacie od 00:00 do 23:00
-                future_dates = [time[-1] + timedelta(hours=i) for i in range(1, days * 24 + 1)]  # dni * 24 godziny/dzień
+                # Trenowanie modeli dla każdego parametru
+                temperature_model = train_model(time, temperature_2m)
+                humidity_model = train_model(time, relative_humidity_2m)
+                precipitation_model = train_model(time, precipitation)
+                wind_speed_model = train_model(time, wind_speed_100m)
+                wind_direction_model = train_model(time, wind_direction_100m)
+
+                future_dates = [time[-1] + timedelta(days=i) for i in range(1, days + 1)]
                 future_X = np.array([(date - time[0]).total_seconds() / (60 * 60) for date in future_dates]).reshape(-1, 1)
-                forecast_temperature = model.predict(future_X)
 
-                forecast_temperature = np.round(forecast_temperature, 1)
+                # Prognozowanie dla każdego parametru
+                forecast_temperature = temperature_model.predict(future_X)
+                forecast_humidity = humidity_model.predict(future_X)
+                forecast_precipitation = precipitation_model.predict(future_X)
+                forecast_wind_speed = wind_speed_model.predict(future_X)
+                forecast_wind_direction = wind_direction_model.predict(future_X)
 
                 forecast_data = {
                     'future_dates': [date.strftime('%Y-%m-%dT%H:%M') for date in future_dates],
-                    'forecast_temperature': forecast_temperature.tolist()
+                    'forecast_temperature': forecast_temperature.tolist(),
+                    'forecast_humidity': forecast_humidity.tolist(),
+                    'forecast_precipitation': forecast_precipitation.tolist(),
+                    'forecast_wind_speed': forecast_wind_speed.tolist(),
+                    'forecast_wind_direction': forecast_wind_direction.tolist()
                 }
                 return jsonify(forecast_data)
             else:
