@@ -1,11 +1,12 @@
 import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import requests
-from sklearn.ensemble import RandomForestRegressor
 import numpy as np
 from datetime import datetime, timedelta
+from sklearn.ensemble import RandomForestRegressor
 from dotenv import load_dotenv
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
 load_dotenv()
 
@@ -27,11 +28,25 @@ class Location(db.Model):
     longitude = db.Column(db.Float)
     createdAt = db.Column(db.DateTime)
     updatedAt = db.Column(db.DateTime)
+    weather_data = db.relationship('WeatherData', backref='location', lazy=True)
 
-def train_model(time, data):
+class WeatherData(db.Model):
+    __tablename__ = 'weatherdata'
+    id = db.Column(db.Integer, primary_key=True)
+    uuid = db.Column(db.String, nullable=False, unique=True)
+    date = db.Column(db.DateTime, nullable=False)
+    temperature = db.Column(db.Float, nullable=False)
+    humidity = db.Column(db.Float, nullable=False)
+    precipitation = db.Column(db.Float, nullable=False)
+    windSpeed = db.Column(db.Float, nullable=False)
+    windDirection = db.Column(db.Integer, nullable=False)
+    locationId = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
+    createdAt = db.Column(db.DateTime)
+    updatedAt = db.Column(db.DateTime)
+
+def train_model(X, y):
     model = RandomForestRegressor()
-    X = np.array([(date - time[0]).total_seconds() / (60 * 60) for date in time]).reshape(-1, 1)
-    model.fit(X, data)
+    model.fit(X, y)
     return model
 
 @app.route('/forecast_weather', methods=['GET'])
@@ -46,50 +61,41 @@ def forecast_weather():
         location = Location.query.filter_by(city=city_name).first()
 
         if location:
-            latitude = location.latitude
-            longitude = location.longitude
+            weather_data = location.weather_data
+            df = pd.DataFrame([(data.date, data.temperature, data.humidity, data.precipitation, data.windSpeed, data.windDirection) for data in weather_data], columns=['date', 'temperature', 'humidity', 'precipitation', 'wind_speed', 'wind_direction'])
+            df['date'] = pd.to_datetime(df['date'])
 
-            url = f'https://archive-api.open-meteo.com/v1/archive?latitude={latitude}&longitude={longitude}&start_date=2024-03-01&end_date=2024-04-07&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_100m,wind_direction_100m'
+            # Znajdź ostatnią datę w danych
+            last_date = df['date'].max()
 
-            response = requests.get(url)
+            # Przewidywane daty dla przyszłych dni
+            future_dates = [last_date + timedelta(hours=i) for i in range(1, 24 * days + 1)]
 
-            if response.status_code == 200:
-                weather_data = response.json()
-                time = np.array([datetime.strptime(date, '%Y-%m-%dT%H:%M') for date in weather_data['hourly']['time']])
-                temperature_2m = np.array(weather_data['hourly']['temperature_2m'])
-                relative_humidity_2m = np.array(weather_data['hourly']['relative_humidity_2m'])
-                precipitation = np.array(weather_data['hourly']['precipitation'])
-                wind_speed_100m = np.array(weather_data['hourly']['wind_speed_100m'])
-                wind_direction_100m = np.array(weather_data['hourly']['wind_direction_100m'])
+            # Stworzenie DataFrame dla przyszłych dat
+            future_df = pd.DataFrame({'date': future_dates})
 
-                # Trenowanie modeli dla każdego parametru
-                temperature_model = train_model(time, temperature_2m)
-                humidity_model = train_model(time, relative_humidity_2m)
-                precipitation_model = train_model(time, precipitation)
-                wind_speed_model = train_model(time, wind_speed_100m)
-                wind_direction_model = train_model(time, wind_direction_100m)
+            # Trenowanie modeli na pełnych danych
+            models = {}
+            for column in df.columns[1:]:
+                model = train_model(df[['date']], df[column])
+                models[column] = model
 
-                future_dates = [time[-1] + timedelta(days=i) for i in range(1, days + 1)]
-                future_X = np.array([(date - time[0]).total_seconds() / (60 * 60) for date in future_dates]).reshape(-1, 1)
+            # Przewidywanie dla przyszłych dat
+            forecast_data = {}
+            for column in df.columns[1:]:
+                forecast_data[column] = models[column].predict(future_df[['date']]).tolist()
 
-                # Prognozowanie dla każdego parametru
-                forecast_temperature = temperature_model.predict(future_X)
-                forecast_humidity = humidity_model.predict(future_X)
-                forecast_precipitation = precipitation_model.predict(future_X)
-                forecast_wind_speed = wind_speed_model.predict(future_X)
-                forecast_wind_direction = wind_direction_model.predict(future_X)
+            # Tworzenie końcowego JSON
+            forecast_json = {
+                'future_dates': [date.strftime('%Y-%m-%dT%H:%M') for date in future_dates],
+                'forecast_temperature': forecast_data['temperature'],
+                'forecast_humidity': forecast_data['humidity'],
+                'forecast_precipitation': forecast_data['precipitation'],
+                'forecast_wind_speed': forecast_data['wind_speed'],
+                'forecast_wind_direction': forecast_data['wind_direction']
+            }
 
-                forecast_data = {
-                    'future_dates': [date.strftime('%Y-%m-%dT%H:%M') for date in future_dates],
-                    'forecast_temperature': forecast_temperature.tolist(),
-                    'forecast_humidity': forecast_humidity.tolist(),
-                    'forecast_precipitation': forecast_precipitation.tolist(),
-                    'forecast_wind_speed': forecast_wind_speed.tolist(),
-                    'forecast_wind_direction': forecast_wind_direction.tolist()
-                }
-                return jsonify(forecast_data)
-            else:
-                return jsonify({'error': 'Wystąpił błąd podczas pobierania danych pogodowych'}), response.status_code
+            return jsonify(forecast_json)
         else:
             return jsonify({'error': 'Nie znaleziono danych lokalizacyjnych dla podanej lokalizacji'}), 404
     except Exception as e:
