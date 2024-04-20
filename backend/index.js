@@ -47,7 +47,7 @@ app.use(WeatherDataRoute);
 
 // store.sync();
 
-cron.schedule('46 10 * * *', async () => {
+cron.schedule('15 13 * * *', async () => {
     try {
         await saveTodayWeatherData();
         console.log('Pobrano i zapisano dane z API forecast.');
