@@ -9,7 +9,7 @@ Chart.register(...registerables);
 const ForecastWeather = () => {
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
-    const [weatherData, setWeatherData] = useState([]);
+    const [weatherData, setWeatherData] = useState({});
     const [showWeatherData, setShowWeatherData] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -74,8 +74,8 @@ const ForecastWeather = () => {
         setTemperatureData(data.forecast_temperature);
         setHumidityData(data.forecast_humidity);
         setPrecipitationData(data.forecast_precipitation);
-        setWindSpeedData(data.forecast_wind_speed);
-        setWindDirectionData(data.forecast_wind_direction);
+        setWindSpeedData(data.forecast_windSpeed);
+        setWindDirectionData(data.forecast_windDirection);
     };
 
     const chartOptions = {
@@ -159,7 +159,7 @@ const ForecastWeather = () => {
                     <h1 className="title has-text-centered">Report from forecasting weather for "{selectedLocation}"</h1>
                     <h2>Temperature</h2>
                     <Line ref={temperatureChartRef} data={{
-                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        labels: weatherData.future_dates,
                         datasets: [{
                             label: 'Temperature (°C)',
                             data: temperatureData,
@@ -170,7 +170,7 @@ const ForecastWeather = () => {
                     }} options={chartOptions} />
                     <h2>Humidity</h2>
                     <Line ref={humidityChartRef} data={{
-                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        labels: weatherData.future_dates,
                         datasets: [{
                             label: 'Humidity (%)',
                             data: humidityData,
@@ -181,7 +181,7 @@ const ForecastWeather = () => {
                     }} options={chartOptions} />
                     <h2>Precipitation</h2>
                     <Bar ref={precipitationChartRef} data={{
-                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        labels: weatherData.future_dates,
                         datasets: [{
                             label: 'Precipitation (mm)',
                             data: precipitationData,
@@ -192,7 +192,7 @@ const ForecastWeather = () => {
                     }} options={chartOptions} />
                     <h2>Wind Speed</h2>
                     <Line ref={windSpeedChartRef} data={{
-                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        labels: weatherData.future_dates,
                         datasets: [{
                             label: 'Wind Speed (m/s)',
                             data: windSpeedData,
@@ -203,7 +203,7 @@ const ForecastWeather = () => {
                     }} options={chartOptions} />
                     <h2>Wind Direction</h2>
                     <Bar ref={windDirectionChartRef} data={{
-                        labels: weatherData.future_dates.map((date) => moment(date).format("DD.MM.YYYY | HH:mm")),
+                        labels: weatherData.future_dates,
                         datasets: [{
                             label: 'Wind Direction (°)',
                             data: windDirectionData,
@@ -230,10 +230,10 @@ const ForecastWeather = () => {
                                     <tr key={index + 1}>
                                         <td>{index + 1}</td>
                                         <td>{moment(date).format("DD.MM.YYYY | HH:mm")}</td>
-                                        <td>{temperatureData[index]} °C</td>
-                                        <td>{humidityData[index]} %</td>
-                                        <td>{precipitationData[index]} mm</td>
-                                        <td>{windSpeedData[index]} m/s</td>
+                                        <td>{temperatureData[index].toFixed(1)} °C</td>
+                                        <td>{Math.round(humidityData[index])} %</td>
+                                        <td>{precipitationData[index].toFixed(1)} mm</td>
+                                        <td>{windSpeedData[index].toFixed(1)} m/s</td>
                                         <td>{getWindDirection(windDirectionData[index])}</td>
                                     </tr>
                                 ))}
