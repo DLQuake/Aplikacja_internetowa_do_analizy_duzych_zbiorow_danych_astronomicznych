@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 
 const Userlist = () => {
 	const [users, setUsers] = useState([]);
+	const [searchName, setSearchName] = useState("");
+	const [searchEmail, setSearchEmail] = useState("");
+	const [searchRole, setSearchRole] = useState("");
 
 	useEffect(() => {
 		getUsers();
@@ -14,14 +17,58 @@ const Userlist = () => {
 		setUsers(response.data);
 	};
 
-	const deleteUser = async (uzytkownikId) => {
-		await axios.delete(`http://localhost:5000/users/${uzytkownikId}`);
+	const deleteUser = async (userId) => {
+		await axios.delete(`http://localhost:5000/users/${userId}`);
 		getUsers();
 	};
+
+	const filteredUsers = users.filter(user => {
+		const fullName = `${user.imie} ${user.nazwisko}`.toLowerCase();
+		const email = user.email.toLowerCase();
+		const role = user.role.toLowerCase();
+		return fullName.includes(searchName.toLowerCase()) && email.includes(searchEmail.toLowerCase()) && role.includes(searchRole.toLowerCase());
+	});
 
 	return (
 		<div>
 			<h1 className="title">Users</h1>
+			<h2 className="subtitle">Search User</h2>
+			<div className="field">
+				<label className="label">Search by Name and Surname:</label>
+				<div className="control">
+					<input
+						className="input"
+						type="text"
+						placeholder="Search by name and surname"
+						value={searchName}
+						onChange={(e) => setSearchName(e.target.value)}
+					/>
+				</div>
+			</div>
+			<div className="field">
+				<label className="label">Search by Email:</label>
+				<div className="control">
+					<input
+						className="input"
+						type="text"
+						placeholder="Search by email"
+						value={searchEmail}
+						onChange={(e) => setSearchEmail(e.target.value)}
+					/>
+				</div>
+			</div>
+			<div className="field">
+				<label className="label">Search by Role:</label>
+				<div className="control">
+					<div className="select is-fullwidth">
+						<select value={searchRole} onChange={(e) => setSearchRole(e.target.value)}>
+							<option value="">Select Role</option>
+							<option value="admin">Admin</option>
+							<option value="user">User</option>
+						</select>
+					</div>
+				</div>
+			</div>
 			<h2 className="subtitle">User list</h2>
 			<table className="table is-striped is-fullwidth">
 				<thead>
@@ -35,7 +82,7 @@ const Userlist = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{users.map((user, index) => (
+					{filteredUsers.map((user, index) => (
 						<tr key={user.uuid}>
 							<td>{index + 1}</td>
 							<td>{user.imie}</td>
