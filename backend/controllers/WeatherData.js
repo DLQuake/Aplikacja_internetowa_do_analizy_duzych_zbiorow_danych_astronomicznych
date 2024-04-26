@@ -239,3 +239,32 @@ export const ForecastWeather = async (req, res) => {
         res.status(500).json({ error: 'Wystąpił błąd serwera podczas komunikacji z serwerem Flask' });
     }
 };
+
+export const deleteWeatherDataByCityName = async (req, res) => {
+    const city = req.query.city
+    try {
+        const location = await Location.findOne({
+            where: {
+                city: city,
+            }
+        });
+
+        if (!location) {
+            return res.status(404).json({ message: `Brak podanej lokalizacji w bazie.` });
+        }
+
+        const deletedRows = await WeatherData.destroy({
+            where: {
+                locationId: location.id
+            }
+        });
+
+        if (deletedRows > 0) {
+            return res.status(200).json({ message: `Dane pogodowe powiązane z nazwą miasta ${city} zostały pomyślnie usunięte.` });
+        } else {
+            return res.status(404).json({ message: `Nie znaleziono danych o pogodzie dla nazwy miasta ${city}.` });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
