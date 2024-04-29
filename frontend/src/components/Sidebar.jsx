@@ -50,6 +50,11 @@ const Sidebar = () => {
 									<IoLocationSharp /> Locations
 								</NavLink>
 							</li>
+							<li>
+								<NavLink to={"/dashboard/weatherdatas"}>
+									<IoCloudySharp /> Weather data
+								</NavLink>
+							</li>
 						</ul>
 					</div>
 				)}
