@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import moment from 'moment';
 import DatePicker from "react-datepicker";
@@ -20,13 +19,16 @@ const HistorydatasList = () => {
     const getWeatherdata = async () => {
         try {
             const response = await axios.get("http://localhost:5000/weatherdata/all");
-            setWeatherdatas(response.data.sort((a, b) => {
+            const filteredWeatherdata = response.data.filter(weatherdata => {
+                return !moment(weatherdata.date).isSame(moment(), 'day');
+            });
+            setWeatherdatas(filteredWeatherdata.sort((a, b) => {
                 if (a.location.city === b.location.city) {
                     return new Date(a.date) - new Date(b.date);
                 }
                 return a.location.city > b.location.city ? 1 : -1;
             }));
-            const uniqueCities = [...new Set(response.data.map(weatherdata => weatherdata.location.city))];
+            const uniqueCities = [...new Set(filteredWeatherdata.map(weatherdata => weatherdata.location.city))];
             setCities(uniqueCities);
         } catch (error) {
             console.error("Wystąpił błąd podczas pobierania danych:", error);
