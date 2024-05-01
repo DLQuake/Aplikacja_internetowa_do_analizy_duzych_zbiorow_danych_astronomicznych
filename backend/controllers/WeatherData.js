@@ -37,6 +37,55 @@ export const getWeatherdataById = async (req, res) => {
     }
 }
 
+export const getCurrentWeather = async (req, res) => {
+    try {
+        const city = req.query.city;
+        const currentDate = new Date();
+        const currentHour = currentDate.getUTCHours();
+
+        // Pobierz ID lokalizacji dla danego miasta
+        const location = await Location.findOne({
+            where: { city }
+        });
+
+        if (!location) {
+            return res.status(404).json({ msg: "Location not found" });
+        }
+
+        // Pobierz wszystkie dane pogodowe dla wybranej lokalizacji, gdzie data jest dzisiejsza
+        const weatherData = await WeatherData.findAll({
+            attributes: ['uuid', 'date', 'temperature', 'humidity', 'precipitation', 'windSpeed', 'windDirection'],
+            where: {
+                date: {
+                    [Op.and]: [
+                        { [Op.gte]: new Date(currentDate.setUTCHours(0, 0, 0, 0)) }, // Początek dzisiejszego dnia
+                        { [Op.lt]: new Date(currentDate.setUTCHours(23, 59, 59, 999)) } // Koniec dzisiejszego dnia
+                    ]
+                },
+                locationId: location.id // Ogranicz wyniki do wybranej lokalizacji
+            },
+            include: [{
+                model: Location,
+                attributes: ['uuid', 'city', "country", "latitude", "longitude"]
+            }]
+        });
+
+        // Znajdź najbliższą godzinę dla aktualnej daty i godziny
+        const currentWeather = weatherData.find(weather => {
+            const weatherDate = new Date(weather.date);
+            return weatherDate.getUTCHours() === currentHour;
+        });
+
+        if (!currentWeather) {
+            return res.status(404).json({ msg: "Weather data not found" });
+        }
+
+        res.status(200).json(currentWeather);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+
 export const getFilteredWeatherdata = async (req, res) => {
     try {
         const { city, startDate, endDate } = req.query;
