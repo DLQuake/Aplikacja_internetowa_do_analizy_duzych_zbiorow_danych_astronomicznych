@@ -1,54 +1,117 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavbarHome from "../components/NavbarHome";
 import FooterHome from "../components/FooterHome";
+import axios from "axios";
+import moment from "moment";
+import { getWindDirection } from "../features/WindDirectionUtils";
 
 const HomePage = () => {
+    const [currentWeather, setCurrentWeather] = useState(null);
+    const [selectedCity, setSelectedCity] = useState("");
+    const [locations, setLocations] = useState([]);
+
+    useEffect(() => {
+        getLocations();
+    }, []);
+
+    const getLocations = async () => {
+        try {
+            const response = await axios.get("http://localhost:5000/locations");
+            setLocations(response.data);
+            // Select a random city upon component mount
+            const randomIndex = Math.floor(Math.random() * response.data.length);
+            const randomCity = response.data[randomIndex].city;
+            setSelectedCity(randomCity);
+            getCurrentWeather(randomCity);
+        } catch (error) {
+            console.error("Error fetching locations:", error);
+        }
+    };
+
+    const getCurrentWeather = async (city) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/weatherdata/current?city=${city}`);
+            setCurrentWeather(response.data);
+        } catch (error) {
+            console.error("Error fetching current weather:", error);
+        }
+    };
+
+    const handleCityChange = (e) => {
+        setSelectedCity(e.target.value);
+        getCurrentWeather(e.target.value);
+    };
+
     return (
         <React.Fragment>
             <NavbarHome />
             <section className="section">
-                <div class="content">
-                    <h1 className="title is-1 has-text-centered">Welcome in Weather Dashboard</h1>
-                </div>
-            </section>
-            <section className="section">
                 <div className="content">
-                    <h2 className="title is-2 has-text-centered">About the App</h2>
-                    <p>
-                        Weather Dashboard is a weather forecasting application that provides real-time weather updates for cities around the world.
-                        Our app uses data from reputable weather APIs to ensure accurate and up-to-date information.
-                    </p>
-                    <p>
-                        Users can search for a specific city to view current weather conditions, as well as forecast data for the upcoming days.
-                        With intuitive navigation and user-friendly interface, Weather Dashboard makes it easy for users to stay informed about the weather wherever they are.
-                    </p>
+                    <h1 className="title is-1 has-text-centered">Welcome to the Weather Dashboard</h1>
+                    <h1 className="subtitle has-text-centered">Choose a city and check a weather</h1>
                 </div>
             </section>
             <section className="section">
-                <div className="content ">
-                    <h2 className="title is-2 has-text-centered">Key Features</h2>
-                    <ul>
-                        <li>Real-time weather updates</li>
-                        <li>Hourly and daily forecast data</li>
-                        <li>Search functionality for finding weather in specific cities</li>
-                        <li>User-friendly interface</li>
-                        <li>Responsive design for mobile and desktop devices</li>
-                    </ul>
+                <div className="field">
+                    <label className="label">Select City:</label>
+                    <div className="control">
+                        <div className="select is-fullwidth">
+                            <select value={selectedCity} onChange={handleCityChange}>
+                                {locations.map((location) => (
+                                    <option key={location.uuid} value={location.city}>{location.city}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </section>
-            <section className="section">
-                <div className="content ">
-                    <h2 className="title is-2 has-text-centered">Technologies Used</h2>
-                    <ul>
-                        <li>React.js - JavaScript framework for building user interfaces</li>
-                        <li>Node.js - JavaScript runtime environment for server-side development</li>
-                        <li>Express.js - Web application framework for Node.js</li>
-                        <li>PostgreSQL - Open-source relational database management system</li>
-                        <li>Axios - Promise-based HTTP client for making requests</li>
-                        <li>Bulma - Front-end framework for responsive and mobile-first design</li>
-                    </ul>
-                </div>
-            </section>
+            {currentWeather && (
+                <section className="section">
+                    <h2 className="title is-2 has-text-centered">Current Weather in {currentWeather.location.city} for {moment(currentWeather.date).format("DD.MM.YYYY | HH:mm")}</h2>
+                    <div className="columns is-multiline">
+                        <div className="column is-full">
+                            <div className="card has-background-link has-text-white has-text-centered">
+                                <div className="card-content">
+                                    <p className="title is-2">Temperature</p>
+                                    <p className="title is-1">{currentWeather.temperature} °C</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-half">
+                            <div className="card has-background-primary has-text-white has-text-centered">
+                                <div className="card-content">
+                                    <p className="title is-2">Humidity</p>
+                                    <p className="title is-1">{currentWeather.humidity} %</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-half">
+                            <div className="card has-background-warning has-text-black has-text-centered">
+                                <div className="card-content">
+                                    <p className="title is-2">Precipitation</p>
+                                    <p className="title is-1">{currentWeather.precipitation} mm</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-half">
+                            <div className="card has-background-danger has-text-white has-text-centered">
+                                <div className="card-content">
+                                    <p className="title is-2">Wind Speed</p>
+                                    <p className="title is-1">{currentWeather.windSpeed} Km/h</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-half">
+                            <div className="card has-background-success has-text-white has-text-centered">
+                                <div className="card-content">
+                                    <p className="title is-2">Wind Direction</p>
+                                    <p className="title is-1">{getWindDirection(currentWeather.windDirection)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
             <FooterHome />
         </React.Fragment>
     );
