@@ -12,7 +12,7 @@ const AboutUs = () => {
                 </div>
             </section>
             <section className="section">
-                <div className="content">
+                <div className="content has-text-white">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam placerat euismod vehicula. Proin sed interdum nunc, ut rutrum lacus. Suspendisse eu justo odio. Nam ex tellus, tincidunt rutrum rutrum non, eleifend ac magna. Fusce a justo enim. Vestibulum tristique tempor ex sit amet egestas. Donec vestibulum non tellus eu placerat. Curabitur aliquam malesuada felis id vestibulum. Vivamus gravida, nisi nec sollicitudin fermentum, elit augue fermentum tortor, ac pulvinar nunc sapien at arcu. Donec ornare, sapien quis porttitor faucibus, ante mauris pretium urna, vitae vestibulum massa lectus euismod dui. Vivamus tempor tincidunt turpis et viverra. Pellentesque arcu sapien, euismod ac massa nec, congue malesuada felis. Ut leo eros, bibendum quis condimentum at, tristique id nulla.
                         <br/><br/>
