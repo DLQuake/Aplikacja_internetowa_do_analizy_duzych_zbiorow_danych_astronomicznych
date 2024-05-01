@@ -12,6 +12,7 @@ import Historydatas from "./pages/Historydatas";
 import ContactHome from "./pages/ContactHome";
 import ForecastWeather from "./pages/ForecastWeatherPage";
 import Weatherdatas from "./pages/Weatherdatas";
+import AboutApp from "./pages/AboutApp";
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/aboutus" element={<AboutUs />} />
+					<Route path="/aboutapp" element={<AboutApp />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/contact" element={<ContactHome />} />
