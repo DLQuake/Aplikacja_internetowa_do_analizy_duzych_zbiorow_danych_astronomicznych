@@ -31,7 +31,7 @@ const WeatherdatasList = () => {
             const uniqueCities = [...new Set(response.data.map(weatherdata => weatherdata.location.city))];
             setCities(uniqueCities);
         } catch (error) {
-            console.error("Wystąpił błąd podczas pobierania danych:", error);
+            console.error("An error occurred while downloading data:", error);
         } finally {
             setLoading(false);
         }
@@ -54,7 +54,7 @@ const WeatherdatasList = () => {
             }));
             tableRef.current.scrollIntoView({ behavior: "smooth" });
         } catch (error) {
-            console.error("Wystąpił błąd podczas pobierania danych:", error);
+            console.error("An error occurred while downloading data:", error);
         }
     };
 
@@ -63,10 +63,10 @@ const WeatherdatasList = () => {
             setLoading(true); // Ustawienie stanu loadingu na true
             await axios.get("http://localhost:5000/weatherdata");
             await getWeatherdata();
-            alert("Dane zostały zaktualizowane.");
+            alert("The data has been updated.");
         } catch (error) {
-            console.error("Wystąpił błąd podczas odświeżania danych:", error);
-            alert("Wystąpił błąd podczas odświeżania danych.");
+            console.error("An error occurred while refreshing data:", error);
+            alert("An error occurred while refreshing data.");
         } finally {
             setLoading(false);
         }

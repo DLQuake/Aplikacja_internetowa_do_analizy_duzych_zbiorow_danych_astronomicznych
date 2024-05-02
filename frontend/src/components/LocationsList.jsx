@@ -23,13 +23,13 @@ const LocationsList = () => {
             if (response.status === 200) {
                 await axios.delete(`http://localhost:5000/locations/${locationId}`);
                 getLocations();
-                alert("Dane pogodowe i lokalizacja zostały pomyślnie usunięte.");
+                alert("Weather data and location have been successfully deleted.");
             } else {
-                alert("Usuwanie danych pogodowych nie powiodło się. Spróbuj ponownie.");
+                alert("Deletion of weather data failed. Please try again.");
             }
         } catch (error) {
-            console.error("Błąd podczas usuwania lokalizacji:", error);
-            alert("Wystąpił błąd podczas usuwania danych lub lokalizacji. Spróbuj ponownie.");
+            console.error("Error deleting location:", error);
+            alert("An error occurred while deleting data or locations. Please try again.");
         }
     };
 
@@ -45,12 +45,12 @@ const LocationsList = () => {
         if (locationAdded) {
             axios.get(`http://localhost:5000/weatherdata`)
                 .then(() => {
-                    console.log("Dane pogodowe zostały pomyślnie pobrane po dodaniu lokalizacji.");
-                    alert("Dane pogodowe zostały pomyślnie pobrane po dodaniu lokalizacji.");
+                    console.log("The weather data was successfully downloaded after the location was added.");
+                    alert("The weather data was successfully downloaded after the location was added.");
                 })
                 .catch(error => {
-                    console.error("Błąd podczas pobierania danych o pogodzie po dodaniu lokalizacji:", error);
-                    alert("Błąd podczas pobierania danych o pogodzie po dodaniu lokalizacji:");
+                    console.error("Error when downloading weather data after adding a location:", error);
+                    alert("Error when downloading weather data after adding a location:");
                 })
                 .finally(() => {
                     setLocationAdded(false);

@@ -35,7 +35,7 @@ const ForecastWeather = () => {
             const response = await axios.get("http://localhost:5000/locations");
             setLocations(response.data);
         } catch (error) {
-            console.error("Błąd podczas pobierania lokalizacji:", error);
+            console.error("Error downloading location:", error);
         }
     };
 
@@ -58,7 +58,7 @@ const ForecastWeather = () => {
             setShowWeatherData(true);
             generateChartData(response.data);
         } catch (error) {
-            console.error("Błąd podczas pobierania danych pogodowych:", error);
+            console.error("Error while downloading weather data:", error);
             setError("No weather data available for this location.");
             setTemperatureData([]);
             setHumidityData([]);
@@ -90,7 +90,7 @@ const ForecastWeather = () => {
             x: {
                 title: {
                     display: true,
-                    text: 'Time',
+                    text: 'Date',
                 },
             },
             y: {

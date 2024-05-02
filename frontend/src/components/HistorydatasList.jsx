@@ -32,7 +32,7 @@ const HistorydatasList = () => {
             const uniqueCities = [...new Set(filteredWeatherdata.map(weatherdata => weatherdata.location.city))];
             setCities(uniqueCities);
         } catch (error) {
-            console.error("Wystąpił błąd podczas pobierania danych:", error);
+            console.error("An error occurred while downloading data:", error);
         }
     };
 
@@ -53,7 +53,7 @@ const HistorydatasList = () => {
             }));
             tableRef.current.scrollIntoView({ behavior: "smooth" });
         } catch (error) {
-            console.error("Wystąpił błąd podczas pobierania danych:", error);
+            console.error("An error occurred while downloading data:", error);
         }
     };
 

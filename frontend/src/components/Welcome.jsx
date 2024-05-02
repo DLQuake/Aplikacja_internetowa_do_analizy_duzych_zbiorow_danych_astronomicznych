@@ -55,7 +55,7 @@ const Welcome = () => {
             setShowWeatherData(true);
             generateChartData(response.data);
         } catch (error) {
-            console.error("Błąd podczas pobierania danych pogodowych:", error);
+            console.error("Error while downloading weather data:", error);
             setError("No weather data available for this location.");
             setTemperatureData([]);
             setHumidityData([]);
@@ -93,7 +93,7 @@ const Welcome = () => {
             x: {
                 title: {
                     display: true,
-                    text: 'Time',
+                    text: 'Date',
                 },
             },
             y: {
@@ -111,7 +111,7 @@ const Welcome = () => {
             <label className="label">Select a Location:</label>
             <div className="field has-addons">
                 <div className="control">
-                    <div className="select">
+                    <div className="select is-medium">
                         <select value={selectedLocation} onChange={handleLocationChange}>
                             <option value="">Select Location</option>
                             {locations.map((location) => (
@@ -121,7 +121,7 @@ const Welcome = () => {
                     </div>
                 </div>
                 <div className="control">
-                    <button className="button is-link" onClick={fetchWeatherData}>Search</button>
+                    <button className="button is-link is-medium" onClick={fetchWeatherData}>Search</button>
                 </div>
             </div>
 
