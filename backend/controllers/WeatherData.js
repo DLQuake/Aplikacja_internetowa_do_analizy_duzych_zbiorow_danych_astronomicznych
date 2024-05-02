@@ -30,7 +30,7 @@ export const getWeatherdataById = async (req, res) => {
                 attributes: ['uuid', 'city', "country", "latitude", "longitude"]
             }]
         });
-        if (!weatherdata) return res.status(404).json({ msg: "Brak danych w bazie dla podanego ID danej pogody" });
+        if (!weatherdata) return res.status(404).json({ msg: "No data in the database for the given weather ID" });
         res.status(200).json(weatherdata);
     } catch (error) {
         res.status(500).json({ msg: error.message });
@@ -43,7 +43,6 @@ export const getCurrentWeather = async (req, res) => {
         const currentDate = new Date();
         const currentHour = currentDate.getUTCHours();
 
-        // Pobierz ID lokalizacji dla danego miasta
         const location = await Location.findOne({
             where: { city }
         });
@@ -52,17 +51,16 @@ export const getCurrentWeather = async (req, res) => {
             return res.status(404).json({ msg: "Location not found" });
         }
 
-        // Pobierz wszystkie dane pogodowe dla wybranej lokalizacji, gdzie data jest dzisiejsza
         const weatherData = await WeatherData.findAll({
             attributes: ['uuid', 'date', 'temperature', 'humidity', 'precipitation', 'windSpeed', 'windDirection'],
             where: {
                 date: {
                     [Op.and]: [
-                        { [Op.gte]: new Date(currentDate.setUTCHours(0, 0, 0, 0)) }, // Początek dzisiejszego dnia
-                        { [Op.lt]: new Date(currentDate.setUTCHours(23, 59, 59, 999)) } // Koniec dzisiejszego dnia
+                        { [Op.gte]: new Date(currentDate.setUTCHours(0, 0, 0, 0)) },
+                        { [Op.lt]: new Date(currentDate.setUTCHours(23, 59, 59, 999)) }
                     ]
                 },
-                locationId: location.id // Ogranicz wyniki do wybranej lokalizacji
+                locationId: location.id
             },
             include: [{
                 model: Location,
@@ -70,7 +68,6 @@ export const getCurrentWeather = async (req, res) => {
             }]
         });
 
-        // Znajdź najbliższą godzinę dla aktualnej daty i godziny
         const currentWeather = weatherData.find(weather => {
             const weatherDate = new Date(weather.date);
             return weatherDate.getUTCHours() === currentHour;
@@ -101,7 +98,7 @@ export const getFilteredWeatherdata = async (req, res) => {
             if (location) {
                 whereClause.locationId = location.id;
             } else {
-                return res.status(404).json({ msg: "Brak danych w bazie dla podanej nazwy lokalizacji" });
+                return res.status(404).json({ msg: "No data in the database for the given location name" });
             }
         }
 
@@ -110,7 +107,7 @@ export const getFilteredWeatherdata = async (req, res) => {
                 [Op.between]: [startDate, endDate],
             };
         } else if (startDate || endDate) {
-            return res.status(400).json({ msg: "Podano tylko jeden zakres dat" });
+            return res.status(400).json({ msg: "Only one date range is given" });
         }
 
         const weatherdata = await WeatherData.findAll({
@@ -123,7 +120,7 @@ export const getFilteredWeatherdata = async (req, res) => {
         });
 
         if (weatherdata.length === 0) {
-            return res.status(404).json({ msg: "Brak danych pogodowych dla podanych kryteriów" });
+            return res.status(404).json({ msg: "No weather data for the given criteria" });
         }
 
         res.status(200).json(weatherdata);
@@ -173,10 +170,10 @@ export const saveWeatherDatatoDB = async (req, res) => {
                         }
                     }
                 } else {
-                    console.error('Brak danych pogodowych dla lokalizacji (API archiwalne):', location.city);
+                    console.error('No weather data for location (API archived):', location.city);
                 }
             } else {
-                console.error('Błąd podczas pobierania danych pogodowych dla lokalizacji (API archiwalne):', location.city);
+                console.error('Error when downloading weather data for a location (Archive API):', location.city);
             }
 
             const forecastApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_120m,wind_direction_120m&past_days=1&forecast_days=1`;
@@ -207,17 +204,17 @@ export const saveWeatherDatatoDB = async (req, res) => {
                         }
                     }
                 } else {
-                    console.error('Brak danych pogodowych dla lokalizacji (API prognozowane):', location.city);
+                    console.error('No weather data for the location (API forecast):', location.city);
                 }
             } else {
-                console.error('Błąd podczas pobierania danych pogodowych dla lokalizacji (API prognozowane):', location.city);
+                console.error('Error when downloading weather data for a location (forecast API):', location.city);
             }
         }
 
-        res.status(200).json({ msg: "Dane pogodowe zostały pomyślnie zapisane" });
+        res.status(200).json({ msg: "Weather data was successfully saved" });
     } catch (error) {
-        console.error('Błąd podczas pobierania i zapisywania danych pogodowych:', error);
-        res.status(500).json({ error: "Wystąpił błąd podczas przetwarzania żądania" });
+        console.error('Error while downloading and saving weather data:', error);
+        res.status(500).json({ error: "An error occurred while processing the request" });
     }
 };
 
@@ -262,14 +259,14 @@ export const saveTodayWeatherData = async () => {
                         }
                     }
                 } else {
-                    console.error('Brak danych pogodowych dla lokalizacji (API prognozowane):', location.city);
+                    console.error('No weather data for the location (API forecast):', location.city);
                 }
             } else {
-                console.error('Błąd podczas pobierania danych pogodowych dla lokalizacji (API prognozowane):', location.city);
+                console.error('Error when downloading weather data for a location (forecast API):', location.city);
             }
         }
     } catch (error) {
-        console.error('Błąd podczas pobierania i zapisywania danych pogodowych:', error);
+        console.error('Error while downloading and saving weather data:', error);
     }
 };
 
@@ -281,11 +278,11 @@ export const ForecastWeather = async (req, res) => {
         if (response.status === 200) {
             res.status(200).json(response.data);
         } else {
-            res.status(response.status).json({ error: 'Błąd podczas komunikacji z serwerem Flask' });
+            res.status(response.status).json({ error: 'Error communicating with the Flask server' });
         }
     } catch (error) {
-        console.error('Błąd podczas wysyłania żądania do serwera Flask:', error);
-        res.status(500).json({ error: 'Wystąpił błąd serwera podczas komunikacji z serwerem Flask' });
+        console.error('Error while sending a request to the Flask server:', error);
+        res.status(500).json({ error: 'A server error occurred while communicating with the Flask server' });
     }
 };
 
@@ -299,7 +296,7 @@ export const deleteWeatherDataByCityName = async (req, res) => {
         });
 
         if (!location) {
-            return res.status(404).json({ message: `Brak podanej lokalizacji w bazie.` });
+            return res.status(404).json({ message: `No location given in the database.` });
         }
 
         const deletedRows = await WeatherData.destroy({
@@ -309,9 +306,9 @@ export const deleteWeatherDataByCityName = async (req, res) => {
         });
 
         if (deletedRows > 0) {
-            return res.status(200).json({ message: `Dane pogodowe powiązane z nazwą miasta ${city} zostały pomyślnie usunięte.` });
+            return res.status(200).json({ message: `The weather data associated with the city name ${city} has been successfully deleted.` });
         } else {
-            return res.status(404).json({ message: `Nie znaleziono danych o pogodzie dla nazwy miasta ${city}.` });
+            return res.status(404).json({ message: `No weather data found for city name ${city}.` });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });

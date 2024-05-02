@@ -13,7 +13,7 @@ export const Register = async (req, res) => {
             password: hashPassword,
             role: "user"
         });
-        res.status(201).json({ msg: "Pomyślnie zarejestrowano użytkownika" });
+        res.status(201).json({ msg: "User successfully registered" });
     } catch (error) {
         res.status(400).json({ msg: error.message });
     }
@@ -25,9 +25,9 @@ export const Login = async (req, res) => {
             email: req.body.email
         }
     });
-    if (!user) return res.status(404).json({ msg: "Użytkownik nie znaleziony" });
+    if (!user) return res.status(404).json({ msg: "User not found" });
     const match = await argon2.verify(user.password, req.body.password);
-    if (!match) return res.status(400).json({ msg: "Błędne hasło" });
+    if (!match) return res.status(400).json({ msg: "Wrong password" });
     req.session.userId = user.uuid;
     const uuid = user.uuid;
     const imie = user.imie;
@@ -39,7 +39,7 @@ export const Login = async (req, res) => {
 
 export const Me = async (req, res) => {
     if (!req.session.userId) {
-        return res.status(401).json({ msg: "Zaloguj się do konta" });
+        return res.status(401).json({ msg: "Log in to your account" });
     }
     const user = await User.findOne({
         attributes: ['uuid', 'imie', 'nazwisko', 'email', 'role'],
@@ -47,13 +47,13 @@ export const Me = async (req, res) => {
             uuid: req.session.userId
         }
     });
-    if (!user) return res.status(404).json({ msg: "Użytkownik nie znaleziony" });
+    if (!user) return res.status(404).json({ msg: "User not found" });
     res.status(200).json(user);
 }
 
 export const logOut = (req, res) => {
     req.session.destroy((err) => {
-        if (err) return res.status(400).json({ msg: "Nie można się zalogować" });
-        res.status(200).json({ msg: "Wylogowano pomyślnie" });
+        if (err) return res.status(400).json({ msg: "Unable to log in" });
+        res.status(200).json({ msg: "Successfully logged out" });
     });
 }

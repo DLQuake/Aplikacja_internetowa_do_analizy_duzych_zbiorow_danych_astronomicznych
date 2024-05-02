@@ -20,7 +20,7 @@ export const getLocationById = async (req, res) => {
                 uuid: req.params.id
             }
         });
-        if (!location) return res.status(404).json({ msg: "Brak danych w bazie dla podanego ID lokalizacji" });
+        if (!location) return res.status(404).json({ msg: "No data in the database for the given location ID" });
         res.status(200).json(location);
     } catch (error) {
         res.status(500).json({ msg: error.message });
@@ -32,7 +32,7 @@ export const getLocationDataFromAPIToDB = async (req, res) => {
         const name = req.params.city;
 
         if (!name) {
-            return res.status(400).json({ error: 'Brak nazwy miasta' });
+            return res.status(400).json({ error: 'No city name' });
         }
 
         const existingLocation = await Location.findOne({
@@ -48,7 +48,7 @@ export const getLocationDataFromAPIToDB = async (req, res) => {
         const response = await axios.get(`https://geocoding-api.open-meteo.com/v1/search?name=${name}&count=1&language=en&format=json`);
 
         if (response.status !== 200 || !response.data.results || response.data.results.length === 0) {
-            return res.status(404).json({ error: 'Nie znaleziono danych dla podanego miasta' });
+            return res.status(404).json({ error: 'No data found for the specified city' });
         }
 
         const { name: city, latitude, longitude, country } = response.data.results[0];
@@ -62,8 +62,8 @@ export const getLocationDataFromAPIToDB = async (req, res) => {
 
         res.status(200).json(location);
     } catch (error) {
-        console.error('Błąd pobierania danych z API:', error);
-        res.status(500).json({ error: 'Wystąpił błąd serwera podczas pobierania danych z API' });
+        console.error('API data download error:', error);
+        res.status(500).json({ error: 'A server error occurred while downloading data from the API' });
     }
 };
 
@@ -73,14 +73,14 @@ export const deleteLocation = async(req, res) =>{
             uuid: req.params.id
         }
     });
-    if(!location) return res.status(404).json({msg: "Lokalizacja nie znaleziona"});
+    if(!location) return res.status(404).json({msg: "Location not found"});
     try {
         await Location.destroy({
             where:{
                 id: location.id
             }
         });
-        res.status(200).json({msg: "Lokalizacja usunięta"});
+        res.status(200).json({msg: "Location removed"});
     } catch (error) {
         res.status(400).json({msg: error.message});
     }

@@ -28,7 +28,7 @@ export const getUserById = async(req, res) =>{
 
 export const createUser = async(req, res) =>{
     const { imie, nazwisko, email, password, confPassword, role } = req.body;
-    if(password !== confPassword) return res.status(400).json({msg: "Hasło oraz powtórz hasło nie są równe"});
+    if(password !== confPassword) return res.status(400).json({msg: "Password and repeat password are not equal"});
     const hashPassword = await argon2.hash(password);
     try {
         await User.create({
@@ -38,7 +38,7 @@ export const createUser = async(req, res) =>{
             password: hashPassword,
             role: role
         });
-        res.status(201).json({msg: "Pomyślnie zarejestrowano użytkownika"});
+        res.status(201).json({msg: "User successfully registered"});
     } catch (error) {
         res.status(400).json({msg: error.message});
     }
@@ -50,7 +50,7 @@ export const updateUser = async(req, res) =>{
             uuid: req.params.id
         }
     });
-    if(!user) return res.status(404).json({msg: "Użytkownik nie znaleziony"});
+    if(!user) return res.status(404).json({msg: "User not found"});
     const { imie, nazwisko, email, password, confPassword, role } = req.body;
     let hashPassword;
     if(password === "" || password === null){
@@ -58,7 +58,7 @@ export const updateUser = async(req, res) =>{
     }else{
         hashPassword = await argon2.hash(password);
     }
-    if(password !== confPassword) return res.status(400).json({msg: "Hasło oraz powtórz hasło nie są równe"});
+    if(password !== confPassword) return res.status(400).json({msg: "Password and repeat password are not equal"});
     try {
         await User.update({
             imie: imie,
@@ -71,7 +71,7 @@ export const updateUser = async(req, res) =>{
                 id: user.id
             }
         });
-        res.status(200).json({msg: "Dane użytkownika Zaktualizowane"});
+        res.status(200).json({msg: "User data Updated"});
     } catch (error) {
         res.status(400).json({msg: error.message});
     }
@@ -83,14 +83,14 @@ export const deleteUser = async(req, res) =>{
             uuid: req.params.id
         }
     });
-    if(!user) return res.status(404).json({msg: "Użytkownik nie znaleziony"});
+    if(!user) return res.status(404).json({msg: "User not found"});
     try {
         await User.destroy({
             where:{
                 id: user.id
             }
         });
-        res.status(200).json({msg: "Użytkownik został usunięty"});
+        res.status(200).json({msg: "The user has been removed"});
     } catch (error) {
         res.status(400).json({msg: error.message});
     }
