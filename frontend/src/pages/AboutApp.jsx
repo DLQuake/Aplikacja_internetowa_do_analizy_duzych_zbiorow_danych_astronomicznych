@@ -8,19 +8,20 @@ const AboutApp = () => {
         <React.Fragment>
             <NavbarHome />
             <section className="section">
-                <div className="content has-text-white">
+                <div className="content subtitle has-text-justified has-text-white">
                     <h2 className="title is-2 has-text-centered">About the App</h2>
                     <p>
                         The Weather Dashboard is a sophisticated weather forecasting application designed to provide users with accurate and real-time weather
                         updates for cities worldwide. Leveraging data from reputable weather APIs, our app ensures precise and up-to-date information on
                         current weather conditions and forecasts.
-                    </p>
-                    <p>
+                        <br /><br />
                         Users have the ability to search for specific cities and view comprehensive weather data, including temperature, humidity,
                         precipitation, wind speed, and wind direction. Whether it's planning outdoor activities or staying informed about weather trends, the
                         Weather Dashboard empowers users with the insights they need to make informed decisions.
-                    </p>
-                    <p>
+                        <br /><br />
+                        In addition to browsing current weather data, the Weather Dashboard also offers robust forecasting capabilities. Users can access
+                        hourly and daily forecasts, allowing for detailed planning and preparation based on weather predictions.
+                        <br /><br />
                         With an intuitive user interface and seamless navigation, our app offers a hassle-free experience for users to access weather
                         information anytime, anywhere. Stay ahead of the weather curve and never be caught off guard with the Weather Dashboard.
                     </p>
