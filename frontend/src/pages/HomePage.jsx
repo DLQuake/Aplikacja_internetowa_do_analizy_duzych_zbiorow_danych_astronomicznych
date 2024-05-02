@@ -18,7 +18,6 @@ const HomePage = () => {
         try {
             const response = await axios.get("http://localhost:5000/locations");
             setLocations(response.data);
-            // Select a random city upon component mount
             const randomIndex = Math.floor(Math.random() * response.data.length);
             const randomCity = response.data[randomIndex].city;
             setSelectedCity(randomCity);
@@ -55,7 +54,7 @@ const HomePage = () => {
                 <div className="field">
                     <label className="label">Select City:</label>
                     <div className="control">
-                        <div className="select is-fullwidth">
+                        <div className="select is-medium is-fullwidth">
                             <select value={selectedCity} onChange={handleCityChange}>
                                 {locations.map((location) => (
                                     <option key={location.uuid} value={location.city}>{location.city}</option>
