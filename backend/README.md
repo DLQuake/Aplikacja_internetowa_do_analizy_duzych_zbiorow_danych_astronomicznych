@@ -58,6 +58,12 @@
 ## Co zrobić po uruchomieniu backendu?
 Po uruchomieniu backendu należy użyć narzędzia [Postman](https://www.postman.com/) w celu dodania użytkownika z rolą admin.
 
-Przyklad poniżej
+Przykład poniżej
+
+1. Dodać nowe `request` w programie `Postman`,
+2. Wpisać URL taki jak na zdjęciu i ustawić typ na `Post`,
+3. Wpisać dane logowania w formie `JSON` Tak jak na poniższym zdjęciu,
+4. Nacisnąć przycisk `Send`,
+5. Po pomyślnym wykonaniu poleceń powinien się wyświetlić komunikat ze pomyślnie dodano użytkownika.
 
 ![alt text](image.png)
