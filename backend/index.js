@@ -50,9 +50,9 @@ app.use(WeatherDataRoute);
 cron.schedule('15 13 * * *', async () => {
     try {
         await saveTodayWeatherData();
-        console.log('Pobrano i zapisano dane z API forecast.');
+        console.log('Downloaded and saved today API data.');
     } catch (error) {
-        console.error('Błąd podczas pobierania i zapisywania danych z API forecast:', error);
+        console.error('Error downloading and saving today API data:', error);
     }
 });
 
