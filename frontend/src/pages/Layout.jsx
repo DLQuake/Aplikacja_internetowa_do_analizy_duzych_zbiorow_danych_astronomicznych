@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
 		<React.Fragment>
 			<Navbar />
 			<div className="columns mt-6" style={{ minHeight: "100vh" }}>
-				<div className="column is-2">
+				<div className="column is-2" style={{ borderRight: "2px solid #1F2229" }}>
 					<Sidebar />
 				</div>
 				<div className="column">
