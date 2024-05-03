@@ -56,8 +56,8 @@ const ContactForm = () => {
                                 <textarea class="textarea is-medium" rows="10" name="message" placeholder="Message content..."></textarea>
                             </div>
                         </div>
-                        <div className="field mt-5 is-grouped is-grouped-centered">
-                            <button type="submit" className="button is-link is-medium">Send a message</button>
+                        <div className="field mt-5">
+                            <button type="submit" className="button is-link is-medium is-fullwidth">Send a message</button>
                         </div>
                     </div>
                 </div>
