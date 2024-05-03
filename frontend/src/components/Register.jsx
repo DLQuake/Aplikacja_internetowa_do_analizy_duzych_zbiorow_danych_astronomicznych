@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RegisterUser, reset } from "../features/authSlice";
 import NavbarHome from "./NavbarHome";
+import FooterHome from "./FooterHome";
 
 const Register = () => {
     const [imie, setImie] = useState("");
@@ -30,19 +31,19 @@ const Register = () => {
 
     return (
         <div>
-            <NavbarHome></NavbarHome>
-            <section className="hero is-fullheight is-fullwidth has-background-link">
+            <NavbarHome />
+            <section className="hero is-fullheight is-fullwidth">
                 <div className="hero-body">
                     <div className="container">
                         <div className="columns is-centered">
-                            <div className="column is-4">
+                            <div className="column">
                                 <form onSubmit={Auth} className="box">
                                     {isError && <p className="has-text-centered">{message}</p>}
-                                    <h1 className="title is-2">Registration to the system</h1>
+                                    <h1 className="title is-2 has-text-centered">Registration to the system</h1>
                                     <div className="field">
                                         <label className="label">Name</label>
                                         <div className="control has-icons-left">
-                                            <input type="text" className="input" value={imie} onChange={(e) => setImie(e.target.value)} placeholder="Name" />
+                                            <input type="text" className="input is-medium" value={imie} onChange={(e) => setImie(e.target.value)} placeholder="Name" />
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-person"></i>
                                             </span>
@@ -51,7 +52,7 @@ const Register = () => {
                                     <div className="field">
                                         <label className="label">Surname</label>
                                         <div className="control has-icons-left">
-                                            <input type="text" className="input" value={nazwisko} onChange={(e) => setNazwisko(e.target.value)} placeholder="Surname" />
+                                            <input type="text" className="input is-medium" value={nazwisko} onChange={(e) => setNazwisko(e.target.value)} placeholder="Surname" />
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-person"></i>
                                             </span>
@@ -60,7 +61,7 @@ const Register = () => {
                                     <div className="field">
                                         <label className="label">E-mail</label>
                                         <div className="control has-icons-left">
-                                            <input type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" />
+                                            <input type="email" className="input is-medium" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" />
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-envelope"></i>
                                             </span>
@@ -69,7 +70,7 @@ const Register = () => {
                                     <div className="field">
                                         <label className="label">Password</label>
                                         <div className="control has-icons-left">
-                                            <input type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="******" />
+                                            <input type="password" className="input is-medium" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="******" />
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-lock"></i>
                                             </span>
@@ -78,14 +79,14 @@ const Register = () => {
                                     <div className="field">
                                         <label className="label">Repeat password</label>
                                         <div className="control has-icons-left">
-                                            <input type="password" className="input" value={confPassword} onChange={(e) => setConfPassword(e.target.value)} placeholder="******" />
+                                            <input type="password" className="input is-medium" value={confPassword} onChange={(e) => setConfPassword(e.target.value)} placeholder="******" />
                                             <span class="icon is-small is-left">
                                                 <i class="fa-solid fa-lock"></i>
                                             </span>
                                         </div>
                                     </div>
                                     <div className="field mt-5">
-                                        <button type="submit" className="button is-link is-fullwidth">
+                                        <button type="submit" className="button is-medium is-link is-fullwidth">
                                             {isLoading ? "Loading..." : "Sign up"}
                                         </button>
                                     </div>
@@ -95,6 +96,7 @@ const Register = () => {
                     </div>
                 </div>
             </section>
+            <FooterHome />
         </div>
     );
 };
