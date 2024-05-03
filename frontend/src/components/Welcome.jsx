@@ -4,6 +4,7 @@ import moment from "moment";
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import { getWindDirection } from "../features/WindDirectionUtils";
+import { chartOptions } from "../features/chartOptionsUtils";
 
 Chart.register(...registerables);
 
@@ -28,6 +29,18 @@ const Welcome = () => {
     useEffect(() => {
         fetchLocations();
     }, []);
+
+    useEffect(() => {
+        const randomIndex = Math.floor(Math.random() * locations.length);
+        const randomLocation = locations[randomIndex]?.city || "";
+        setSelectedLocation(randomLocation);
+    }, [locations]);
+
+    useEffect(() => {
+        if (selectedLocation) {
+            fetchWeatherData();
+        }
+    }, [selectedLocation]);
 
     const fetchLocations = async () => {
         try {
@@ -82,51 +95,24 @@ const Welcome = () => {
         setWindDirectionData(windDirectionData);
     };
 
-    const chartOptions = {
-        plugins: {
-            tooltip: {
-                intersect: false,
-                mode: 'index',
-            },
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Date',
-                },
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: '',
-                },
-            },
-        },
-    };
-
     return (
-        <div>
+        <div className="pr-3">
             <h1 className="title">Weather Dashboard</h1>
-            <label className="label">Select a Location:</label>
-            <div className="field has-addons">
+            <div className="field">
+                <label className="label">Select a Location:</label>
                 <div className="control">
-                    <div className="select is-medium">
+                    <div className="select is-striped is-fullwidth is-medium">
                         <select value={selectedLocation} onChange={handleLocationChange}>
-                            <option value="">Select Location</option>
                             {locations.map((location) => (
                                 <option key={location.id} value={location.city}>{location.city}</option>
                             ))}
                         </select>
                     </div>
                 </div>
-                <div className="control">
-                    <button className="button is-link is-medium" onClick={fetchWeatherData}>Search</button>
-                </div>
             </div>
 
-            {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
+            {loading && <p className="title has-text-centered p-5">Loading...</p>}
+            {error && <p className="title has-text-centered p-5">{error}</p>}
             {showWeatherData && (
                 <div>
                     <div className="columns">
@@ -141,7 +127,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(255, 99, 132, 0.1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions} />
+                            }} options={chartOptions('Time', "Temperature (°C)")} />
                         </div>
                         <div className="column">
                             <h2>Humidity</h2>
@@ -154,7 +140,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(54, 162, 235, 0.1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions} />
+                            }} options={chartOptions("Time","Humidity (%)")} />
                         </div>
                         <div className="column">
                             <h2>Precipitation</h2>
@@ -167,7 +153,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(75, 192, 192, 1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions} />
+                            }} options={chartOptions("Time","Precipitation (mm)")} />
                         </div>
                     </div>
                     <div className="columns">
@@ -182,7 +168,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(255, 159, 64, 0.1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions} />
+                            }} options={chartOptions("Time","Wind Speed (m/s)")} />
                         </div>
                         <div className="column">
                             <h2>Wind Direction</h2>
@@ -195,7 +181,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(153, 102, 255, 1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions} />
+                            }} options={chartOptions("Time","Wind Direction (°)")} />
                         </div>
                     </div>
                     <div className="mt-5">
