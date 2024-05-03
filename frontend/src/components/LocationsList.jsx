@@ -65,7 +65,7 @@ const LocationsList = () => {
     });
 
     return (
-        <div>
+        <div className="pr-3">
             <h1 className="title">Locations list</h1>
             <div className="field">
                 <label className="label">Search by City name:</label>
