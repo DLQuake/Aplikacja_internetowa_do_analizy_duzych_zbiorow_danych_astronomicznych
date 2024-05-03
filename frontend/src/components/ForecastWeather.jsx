@@ -4,6 +4,7 @@ import moment from "moment";
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import { getWindDirection } from "../features/WindDirectionUtils";
+import { chartOptions } from "../features/chartOptionsUtils";
 
 Chart.register(...registerables);
 
@@ -79,33 +80,10 @@ const ForecastWeather = () => {
         setWindDirectionData(data.forecast_windDirection);
     };
 
-    const chartOptions = {
-        plugins: {
-            tooltip: {
-                intersect: false,
-                mode: 'index',
-            },
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Date',
-                },
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: '',
-                },
-            },
-        },
-    };
-
     return (
-        <div>
+        <div className="pr-3">
             <h1 className="title">Forecast Weather</h1>
-            <div className="field pr-6">
+            <div className="field">
                 <label className="label">Select city to forecast weather:</label>
                 <div className="control">
                     <div className="select is-striped is-fullwidth">
@@ -118,7 +96,7 @@ const ForecastWeather = () => {
                     </div>
                 </div>
             </div>
-            <div className="field pr-6">
+            <div className="field">
                 <label className="label">Write a number of days to forecast weather</label>
                 <div className="control">
                     <input className="input" type="number" placeholder="Number of days to forecast weather" value={forecastDays} onChange={handleDaysChange} />
@@ -130,8 +108,8 @@ const ForecastWeather = () => {
                 </div>
             </div>
 
-            {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
+            {loading && <p className="title has-text-centered p-5">Loading...</p>}
+            {error && <p className="title has-text-centered p-5">{error}</p>}
             {showWeatherData && (
                 <div>
                     <div className="control has-text-centered m-6">
@@ -148,7 +126,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(255, 99, 132, 0.1)',
                             fill: true
                         }]
-                    }} options={chartOptions} />
+                    }} options={chartOptions('Time', "Temperature (°C)")} />
                     <h2>Humidity</h2>
                     <Line ref={humidityChartRef} data={{
                         labels: weatherData.future_dates,
@@ -159,7 +137,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
                             fill: true
                         }]
-                    }} options={chartOptions} />
+                    }} options={chartOptions('Time', "Humidity (%)")} />
                     <h2>Precipitation</h2>
                     <Bar ref={precipitationChartRef} data={{
                         labels: weatherData.future_dates,
@@ -170,7 +148,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(75, 192, 192, 1)',
                             fill: true
                         }]
-                    }} options={chartOptions} />
+                    }} options={chartOptions('Time', "Precipitation (mm)")} />
                     <h2>Wind Speed</h2>
                     <Line ref={windSpeedChartRef} data={{
                         labels: weatherData.future_dates,
@@ -181,7 +159,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(255, 159, 64, 0.1)',
                             fill: true
                         }]
-                    }} options={chartOptions} />
+                    }} options={chartOptions('Time', "Wind Speed (m/s)")} />
                     <h2>Wind Direction</h2>
                     <Bar ref={windDirectionChartRef} data={{
                         labels: weatherData.future_dates,
@@ -192,7 +170,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(153, 102, 255, 1)',
                             fill: true
                         }]
-                    }} options={chartOptions} />
+                    }} options={chartOptions('Time', "Wind Direction (°)")} />
                     <div className="mt-5">
                         <table className="table is-striped is-fullwidth">
                             <thead>
