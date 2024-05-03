@@ -58,9 +58,9 @@ const HistorydatasList = () => {
     };
 
     return (
-        <div>
+        <div className="pr-3">
             <h1 className="title">History data list</h1>
-            <div className="field pr-6">
+            <div className="field">
                 <label className="label">Select City:</label>
                 <div className="control">
                     <div className="select is-striped is-fullwidth">
@@ -74,7 +74,7 @@ const HistorydatasList = () => {
                 </div>
             </div>
             <label className="label">Select Date Range:</label>
-            <div className="field pr-6">
+            <div className="field">
                 <div className="control">
                     <DatePicker
                         selectsRange={true}
