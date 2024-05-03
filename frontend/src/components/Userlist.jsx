@@ -30,7 +30,7 @@ const Userlist = () => {
 	});
 
 	return (
-		<div>
+		<div className="pr-3">
 			<h1 className="title">Users</h1>
 			<h2 className="subtitle">Search User</h2>
 			<div className="field">
