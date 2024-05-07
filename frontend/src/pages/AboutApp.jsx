@@ -10,7 +10,7 @@ const AboutApp = () => {
             <section className="section">
                 <div className="content subtitle has-text-justified has-text-white">
                     <h2 className="title is-2 has-text-centered">About the App</h2>
-                    <p>
+                    <p className="box">
                         The Weather Dashboard is a sophisticated weather forecasting application designed to provide users with accurate and real-time weather
                         updates for cities worldwide. Leveraging data from reputable weather APIs, our app ensures precise and up-to-date information on
                         current weather conditions and forecasts.
