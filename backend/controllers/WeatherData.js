@@ -270,21 +270,21 @@ export const saveTodayWeatherData = async () => {
     }
 };
 
-export const ForecastWeather = async (req, res) => {
-    try {
-        const city = req.query.city;
-        const days = req.query.days || 1;
-        const response = await axios.get(`http://localhost:5001/forecast_weather?city=${city}&days=${days}`);
-        if (response.status === 200) {
-            res.status(200).json(response.data);
-        } else {
-            res.status(response.status).json({ error: 'Error communicating with the Flask server' });
-        }
-    } catch (error) {
-        console.error('Error while sending a request to the Flask server:', error);
-        res.status(500).json({ error: 'A server error occurred while communicating with the Flask server' });
-    }
-};
+// export const ForecastWeather = async (req, res) => {
+//     try {
+//         const city = req.query.city;
+//         const days = req.query.days || 1;
+//         const response = await axios.get(`http://localhost:5001/forecast_weather?city=${city}&days=${days}`);
+//         if (response.status === 200) {
+//             res.status(200).json(response.data);
+//         } else {
+//             res.status(response.status).json({ error: 'Error communicating with the Flask server' });
+//         }
+//     } catch (error) {
+//         console.error('Error while sending a request to the Flask server:', error);
+//         res.status(500).json({ error: 'A server error occurred while communicating with the Flask server' });
+//     }
+// };
 
 export const deleteWeatherDataByCityName = async (req, res) => {
     const city = req.query.city
