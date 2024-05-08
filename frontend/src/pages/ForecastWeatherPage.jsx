@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../features/authSlice";
 
-const Dashboard = () => {
+const ForecastWeatherPage = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { isError } = useSelector((state) => state.auth);
@@ -27,4 +27,4 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default ForecastWeatherPage;
