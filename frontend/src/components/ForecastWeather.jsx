@@ -99,14 +99,15 @@ const ForecastWeather = () => {
 
             const pdf = new jsPDF();
             const fileName = `Forecast_Weather_Report_${selectedLocation}_${moment().format("YYYYMMDD_HHmmss")}.pdf`;
-            const pageWidth = pdf.internal.pageSize.getWidth(); // Dodajemy definicję pageWidth
+            const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
 
             pdf.setFontSize(40);
             pdf.setTextColor(65, 105, 225);
             pdf.text("Forecast Weather Report", pageWidth / 2, pageHeight / 2, { align: 'center' });
             pdf.setTextColor(0);
-            pdf.text(`Weather forecast for "${selectedLocation}"`, pageWidth / 2, pageHeight / 2 + 20, { align: 'center' });
+            pdf.text("Weather forecast for city", pageWidth / 2, pageHeight / 2 + 20, { align: 'center' });
+            pdf.text(`"${selectedLocation}"`, pageWidth / 2, pageHeight / 2 + 40, { align: 'center' });
 
             addChartToPDF(pdf, chartImages[0], "Temperature Chart", 20, 120, pageWidth - 40, 150, pageWidth);
             addChartToPDF(pdf, chartImages[1], "Humidity Chart", 20, 120, pageWidth - 40, 150, pageWidth);
