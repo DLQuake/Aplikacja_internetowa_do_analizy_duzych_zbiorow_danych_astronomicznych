@@ -4,7 +4,7 @@ import {
     getWeatherdataById,
     getFilteredWeatherdata,
     saveWeatherDatatoDB,
-    ForecastWeather,
+    // ForecastWeather,
     deleteWeatherDataByCityName,
     getCurrentWeather
 } from "../controllers/WeatherData.js";
@@ -16,7 +16,7 @@ router.get('/weatherdata/one/:id', getWeatherdataById);
 router.get('/weatherdata/current', getCurrentWeather);
 router.get('/weatherdata/filter', getFilteredWeatherdata);
 router.get("/weatherdata", saveWeatherDatatoDB);
-router.get("/weatherdata/forecast", ForecastWeather);
+// router.get("/weatherdata/forecast", ForecastWeather);
 router.delete("/weatherdata/delete", deleteWeatherDataByCityName);
 
 export default router;
