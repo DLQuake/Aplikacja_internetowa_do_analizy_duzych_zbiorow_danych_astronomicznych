@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { IoPerson, IoHome, IoLogOut, IoMail, IoLocationSharp, IoCopySharp, IoCloudySharp } from "react-icons/io5";
+import { IoPerson, IoHome, IoLogOut, IoMail, IoLocationSharp, IoCopySharp, IoCloudySharp, IoFileTrayStacked } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
 
@@ -61,6 +61,11 @@ const Sidebar = () => {
 				<div>
 					<p className="menu-label">User</p>
 					<ul className="menu-list">
+						<li>
+							<NavLink to={"/dashboard/forecastreports"}>
+								<IoFileTrayStacked /> Weather forecast reports
+							</NavLink>
+						</li>
 						<li>
 							<NavLink to={"/dashboard/contact"}>
 								<IoMail /> Contact
