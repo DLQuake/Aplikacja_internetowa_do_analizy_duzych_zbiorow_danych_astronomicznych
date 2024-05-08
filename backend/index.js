@@ -8,6 +8,8 @@ import UserRoute from './routes/UserRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
 import WeatherDataRoute from "./routes/WeatherDataRoute.js";
 import LocationRoute from "./routes/LocationRoute.js";
+import ForecastRoute from "./routes/ForecastRoute.js";
+import ReportRoute from "./routes/ReportRoute.js";
 import cron from 'node-cron';
 import { saveTodayWeatherData } from './controllers/WeatherData.js';
 
@@ -44,6 +46,8 @@ app.use(UserRoute);
 app.use(AuthRoute);
 app.use(LocationRoute);
 app.use(WeatherDataRoute);
+app.use(ForecastRoute);
+app.use(ReportRoute);
 
 // store.sync();
 
