@@ -1,13 +1,11 @@
-import axios from 'axios';
 import Report from "../models/ReportsModel.js";
 import Users from "../models/UserModel.js";
-import { Op } from 'sequelize';
-
+import Forecast from '../models/ForecastModel.js';
 
 export const getAllreport = async (req, res) => {
     try {
         const report = await Report.findAll({
-            attributes: ['uuid', 'title', 'reportDate', 'forecastId'],
+            attributes: ['uuid', 'title', 'reportDate'],
             include: [{
                 model: Users,
                 attributes: ['uuid', 'imie', 'nazwisko', 'email', 'role']
@@ -22,7 +20,7 @@ export const getAllreport = async (req, res) => {
 export const getReportById = async (req, res) => {
     try {
         const location = await Report.findOne({
-            attributes: ['uuid', 'title', 'reportDate', 'forecastId'],
+            attributes: ['uuid', 'title', 'reportDate'],
             where: {
                 uuid: req.params.id
             },
@@ -37,3 +35,34 @@ export const getReportById = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 }
+
+export const deleteReport = async (req, res) => {
+    try {
+        const report = await Report.findOne({
+            where: {
+                uuid: req.params.id
+            }
+        });
+
+        if (!report) {
+            return res.status(404).json({ error: 'Report not found' });
+        }
+
+        await Forecast.destroy({
+            where: {
+                reportId: report.id
+            }
+        });
+
+        await Report.destroy({
+            where: {
+                id: report.id
+            }
+        });
+
+        res.status(200).json({ msg: 'Report and associated forecasts deleted successfully' });
+    } catch (error) {
+        console.error('Error while deleting report and associated forecasts:', error);
+        res.status(500).json({ error: 'An error occurred while deleting report and associated forecasts' });
+    }
+};
