@@ -11,7 +11,9 @@ const HistorydatasList = () => {
     const [selectedCity, setSelectedCity] = useState("");
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [loading, setLoading] = useState(false);
     const tableRef = useRef(null);
+
 
     useEffect(() => {
         getWeatherdata();
@@ -19,6 +21,7 @@ const HistorydatasList = () => {
 
     const getWeatherdata = async () => {
         try {
+            setLoading(true);
             const response = await axios.get("http://localhost:5000/weatherdata/all");
             const filteredWeatherdata = response.data.filter(weatherdata => {
                 return !moment(weatherdata.date).isSame(moment(), 'day');
@@ -33,10 +36,13 @@ const HistorydatasList = () => {
             setCities(uniqueCities);
         } catch (error) {
             console.error("An error occurred while downloading data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     const searchWeatherData = async () => {
+        setLoading(true);
         try {
             const response = await axios.get("http://localhost:5000/weatherdata/filter", {
                 params: {
@@ -54,6 +60,8 @@ const HistorydatasList = () => {
             tableRef.current.scrollIntoView({ behavior: "smooth" });
         } catch (error) {
             console.error("An error occurred while downloading data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -93,37 +101,41 @@ const HistorydatasList = () => {
             </div>
             <div className="field">
                 <div className="control">
-                    <button className="button is-link" onClick={searchWeatherData}>Search</button>
+                    <button className="button is-link" onClick={searchWeatherData}>Apply Filters</button>
                 </div>
             </div>
-            <table className="table is-striped is-fullwidth" ref={tableRef}>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>City</th>
-                        <th>Date</th>
-                        <th>Temperature (°C)</th>
-                        <th>Humidity (%)</th>
-                        <th>Precipitation (mm)</th>
-                        <th>Wind Speed (Km/h)</th>
-                        <th>Wind Direction</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {weatherdatas.map((weatherdata, index) => (
-                        <tr key={weatherdata.uuid}>
-                            <td>{index + 1}</td>
-                            <td>{weatherdata.location.city}</td>
-                            <td>{moment(weatherdata.date).format("DD.MM.YYYY | HH:mm")}</td>
-                            <td>{weatherdata.temperature} °C</td>
-                            <td>{weatherdata.humidity} %</td>
-                            <td>{weatherdata.precipitation} mm</td>
-                            <td>{weatherdata.windSpeed} Km/h</td>
-                            <td>{getWindDirection(weatherdata.windDirection)}</td>
+            {loading ? (
+                <p className="title has-text-centered">Loading...</p>
+            ) : (
+                <table className="table is-striped is-fullwidth" ref={tableRef}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>City</th>
+                            <th>Date</th>
+                            <th>Temperature (°C)</th>
+                            <th>Humidity (%)</th>
+                            <th>Precipitation (mm)</th>
+                            <th>Wind Speed (Km/h)</th>
+                            <th>Wind Direction</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {weatherdatas.map((weatherdata, index) => (
+                            <tr key={weatherdata.uuid}>
+                                <td>{index + 1}</td>
+                                <td>{weatherdata.location.city}</td>
+                                <td>{moment(weatherdata.date).format("DD.MM.YYYY | HH:mm")}</td>
+                                <td>{weatherdata.temperature} °C</td>
+                                <td>{weatherdata.humidity} %</td>
+                                <td>{weatherdata.precipitation} mm</td>
+                                <td>{weatherdata.windSpeed} Km/h</td>
+                                <td>{getWindDirection(weatherdata.windDirection)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 };
