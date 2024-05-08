@@ -7,6 +7,7 @@ const LocationsList = () => {
     const [searchCity, setSearchCity] = useState("");
     const [searchCountry, setSearchCountry] = useState("");
     const [locationAdded, setLocationAdded] = useState(false);
+    const [formValid, setFormValid] = useState(false);
 
     useEffect(() => {
         getLocations();
@@ -39,6 +40,7 @@ const LocationsList = () => {
         await axios.get(`http://localhost:5000/location/${cityName}`);
         setLocationAdded(true);
         setCityName("");
+        setFormValid(false);
     };
 
     useEffect(() => {
@@ -104,7 +106,7 @@ const LocationsList = () => {
                     />
                 </div>
                 <div className="control">
-                    <button className="button is-info" onClick={AddLocation}>Add Location</button>
+                    <button className="button is-info" onClick={AddLocation} disabled={!cityName}>Add Location</button>
                 </div>
             </div>
             <table className="table is-striped is-fullwidth">
