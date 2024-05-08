@@ -3,7 +3,6 @@ import Forecast from "../models/ForecastModel.js";
 import Location from "../models/LocationModel.js";
 import Report from '../models/ReportsModel.js';
 import Users from '../models/UserModel.js';
-import { Op } from 'sequelize';
 
 export const getAllForecast = async (req, res) => {
     try {
@@ -28,18 +27,47 @@ export const getAllForecast = async (req, res) => {
 }
 
 
-// export const ForecastWeather = async (req, res) => {
-//     try {
-//         const city = req.query.city;
-//         const days = req.query.days || 1;
-//         const response = await axios.get(`http://localhost:5001/forecast_weather?city=${city}&days=${days}`);
-//         if (response.status === 200) {
-//             res.status(200).json(response.data);
-//         } else {
-//             res.status(response.status).json({ error: 'Error communicating with the Flask server' });
-//         }
-//     } catch (error) {
-//         console.error('Error while sending a request to the Flask server:', error);
-//         res.status(500).json({ error: 'A server error occurred while communicating with the Flask server' });
-//     }
-// };
+export const ForecastWeather = async (req, res) => {
+    try {
+        const city = req.query.city;
+        const days = req.query.days || 1;
+
+        const response = await axios.get(`http://localhost:5001/forecast_weather?city=${city}&days=${days}`);
+
+        if (response.status === 200) {
+            const newReport = await Report.create({
+                title: `Forecast for ${city}`,
+                reportDate: new Date(),
+                userId: req.userId
+            });
+
+            const location = await Location.findOne({ where: { city } });
+
+            if (!location) {
+                return res.status(400).json({ error: `Location '${city}' not found` });
+            }
+
+            const forecastData = response.data;
+
+            const futureDates = forecastData.future_dates.map(date => new Date(date));
+
+            await Forecast.bulkCreate(futureDates.map((date, index) => ({
+                future_dates: date,
+                forecast_temperature: forecastData.forecast_temperature[index],
+                forecast_humidity: forecastData.forecast_humidity[index],
+                forecast_precipitation: forecastData.forecast_precipitation[index],
+                forecast_windSpeed: forecastData.forecast_windSpeed[index],
+                forecast_windDirection: forecastData.forecast_windDirection[index],
+                locationId: location.id,
+                reportId: newReport.id
+            })));
+
+            res.status(200).json({ msg: "Forecast Saved" });
+        } else {
+            res.status(response.status).json({ error: 'Error communicating with the Flask server' });
+        }
+    } catch (error) {
+        console.error('Error while sending a request to the Flask server:', error);
+        res.status(500).json({ error: 'A server error occurred while communicating with the Flask server' });
+    }
+};
