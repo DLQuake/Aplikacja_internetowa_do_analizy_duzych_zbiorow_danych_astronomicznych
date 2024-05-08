@@ -69,7 +69,6 @@ const Userlist = () => {
 					</div>
 				</div>
 			</div>
-			<h2 className="subtitle">User list</h2>
 			<table className="table is-striped is-fullwidth">
 				<thead>
 					<tr>
