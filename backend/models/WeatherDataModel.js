@@ -4,7 +4,6 @@ import Location from "./LocationModel.js";
 
 const { DataTypes } = Sequelize;
 
-// Model dla danych pogodowych
 const WeatherData = db.define('weatherdata', {
     uuid: {
         type: DataTypes.STRING,
