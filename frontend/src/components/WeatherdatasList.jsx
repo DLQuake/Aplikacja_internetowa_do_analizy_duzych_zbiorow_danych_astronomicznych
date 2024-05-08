@@ -38,6 +38,7 @@ const WeatherdatasList = () => {
     };
 
     const searchWeatherData = async () => {
+        setLoading(true);
         try {
             const response = await axios.get("http://localhost:5000/weatherdata/filter", {
                 params: {
@@ -55,12 +56,14 @@ const WeatherdatasList = () => {
             tableRef.current.scrollIntoView({ behavior: "smooth" });
         } catch (error) {
             console.error("An error occurred while downloading data:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     const refreshData = async () => {
         try {
-            setLoading(true); // Ustawienie stanu loadingu na true
+            setLoading(true);
             await axios.get("http://localhost:5000/weatherdata");
             await getWeatherdata();
             alert("The data has been updated.");
@@ -108,7 +111,7 @@ const WeatherdatasList = () => {
             </div>
             <div className="field">
                 <div className="control">
-                    <button className="button is-link" onClick={searchWeatherData}>Search</button>
+                    <button className="button is-link" onClick={searchWeatherData}>Apply Filters</button>
                 </div>
             </div>
             <div className="field">
