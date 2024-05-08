@@ -10,9 +10,10 @@ import Locations from "./pages/Locations";
 import AboutUs from "./pages/AboutUs";
 import Historydatas from "./pages/Historydatas";
 import ContactHome from "./pages/ContactHome";
-import ForecastWeather from "./pages/ForecastWeatherPage";
+import ForecastWeatherPage from "./pages/ForecastWeatherPage";
 import Weatherdatas from "./pages/Weatherdatas";
 import AboutApp from "./pages/AboutApp";
+import ForecastReportsPage from "./pages/ForecastReportsPage";
 
 function App() {
 	return (
@@ -32,7 +33,8 @@ function App() {
 					<Route path="/dashboard/locations" element={<Locations />} />
 					<Route path="/dashboard/weatherdatas" element={<Weatherdatas />} />
 					<Route path="/dashboard/historydata" element={<Historydatas />} />
-					<Route path="/dashboard/forecastweather" element={<ForecastWeather />} />
+					<Route path="/dashboard/forecastweather" element={<ForecastWeatherPage />} />
+					<Route path="/dashboard/forecastreports" element={<ForecastReportsPage />} />
 				</Routes>
 			</BrowserRouter>
 		</div>
