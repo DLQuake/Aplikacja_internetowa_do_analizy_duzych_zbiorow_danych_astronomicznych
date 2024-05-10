@@ -14,6 +14,7 @@ import ForecastWeatherPage from "./pages/ForecastWeatherPage";
 import Weatherdatas from "./pages/Weatherdatas";
 import AboutApp from "./pages/AboutApp";
 import ForecastReportsPage from "./pages/ForecastReportsPage";
+import ForecastReportsDetailPage from "./pages/ForecastReportsDetailPage";
 
 function App() {
 	return (
@@ -35,6 +36,7 @@ function App() {
 					<Route path="/dashboard/historydata" element={<Historydatas />} />
 					<Route path="/dashboard/forecastweather" element={<ForecastWeatherPage />} />
 					<Route path="/dashboard/forecastreports" element={<ForecastReportsPage />} />
+					<Route path="/dashboard/forecastreports/report/:id" element={<ForecastReportsDetailPage />} />
 				</Routes>
 			</BrowserRouter>
 		</div>
