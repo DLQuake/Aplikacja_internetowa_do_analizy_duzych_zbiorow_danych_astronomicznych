@@ -26,6 +26,44 @@ export const getAllForecast = async (req, res) => {
     }
 }
 
+export const getForecastsByReportAndLocation = async (req, res) => {
+    try {
+        const reportuuid = req.query.reportuuid;
+
+        const report = await Report.findOne({
+            where: {
+                uuid: reportuuid
+            }
+        });
+
+        if (!report) {
+            return res.status(404).json({ error: 'Report not found' });
+        }
+
+        const forecasts = await Forecast.findAll({
+            attributes: ['uuid', 'future_dates', 'forecast_temperature', 'forecast_humidity', 'forecast_precipitation', 'forecast_windSpeed', 'forecast_windDirection'],
+            where: {
+                reportId: report.id,
+            },
+            include: [{
+                model: Location,
+                attributes: ['uuid', 'city', 'country', 'latitude', 'longitude']
+            }, {
+                model: Report,
+                attributes: ['uuid', 'title', 'reportDate'],
+                include: [{
+                    model: Users,
+                    attributes: ['uuid', 'imie', 'nazwisko', 'email', 'role']
+                }]
+            }]
+        });
+
+        res.status(200).json(forecasts);
+    } catch (error) {
+        console.error('Error while fetching forecasts by report and location:', error);
+        res.status(500).json({ error: 'An error occurred while fetching forecasts by report and location' });
+    }
+};
 
 export const ForecastWeather = async (req, res) => {
     try {
