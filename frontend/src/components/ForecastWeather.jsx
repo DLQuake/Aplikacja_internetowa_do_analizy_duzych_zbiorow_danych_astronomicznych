@@ -59,10 +59,11 @@ const ForecastWeather = () => {
 
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:5000/weatherdata/forecast?city=${selectedLocation}&days=${forecastDays}`);
+            const response = await axios.get(`http://localhost:5000/forecast/predict?city=${selectedLocation}&days=${forecastDays}`);
             setWeatherData(response.data);
             setShowWeatherData(true);
             generateChartData(response.data);
+            alert("Report added to account");
         } catch (error) {
             console.error("Error while downloading weather data:", error);
             setError("No weather data available for this location.");
