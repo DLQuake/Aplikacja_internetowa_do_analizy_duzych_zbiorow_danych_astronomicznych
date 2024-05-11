@@ -63,7 +63,7 @@ const Sidebar = () => {
 					<ul className="menu-list">
 						<li>
 							<NavLink to={"/dashboard/forecastreports"}>
-								<IoFileTrayStacked /> Weather forecast reports
+								<IoFileTrayStacked /> Forecast reports
 							</NavLink>
 						</li>
 						<li>
