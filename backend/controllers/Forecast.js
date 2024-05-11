@@ -100,7 +100,7 @@ export const ForecastWeather = async (req, res) => {
                 reportId: newReport.id
             })));
 
-            res.status(200).json({ msg: "Forecast Saved" });
+            res.status(200).json(response.data);
         } else {
             res.status(response.status).json({ error: 'Error communicating with the Flask server' });
         }
