@@ -8,7 +8,7 @@ const AboutApp = () => {
         <React.Fragment>
             <NavbarHome />
             <section className="section">
-                <div className="content subtitle has-text-justified has-text-white">
+                <div className="content subtitle has-text-justified">
                     <h2 className="title is-2 has-text-centered">About the App</h2>
                     <p className="box">
                         The Weather Dashboard is a sophisticated weather forecasting application designed to provide users with accurate and real-time weather
