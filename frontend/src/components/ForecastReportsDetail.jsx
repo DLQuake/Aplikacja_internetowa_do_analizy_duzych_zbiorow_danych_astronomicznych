@@ -110,7 +110,7 @@ const ForecastReportsDetail = () => {
     };
 
     return (
-        <div className="pr-3">
+        <div className="pl-2 pr-3">
             <h1 className="title">Forecast Report Details</h1>
             {loading && <p className="title has-text-centered p-5">Loading...</p>}
             {error && <p className="title has-text-centered p-5">{error}</p>}
@@ -142,34 +142,36 @@ const ForecastReportsDetail = () => {
             {windSpeedChartData && <Line ref={windSpeedChartRef} data={windSpeedChartData} options={chartOptions("Time", "Wind Speed (Km/h)")} />}
             <h2>Wind Direction</h2>
             {windDirectionChartData && <Bar ref={windDirectionChartRef} data={windDirectionChartData} options={chartOptions("Time", "Wind Direction")} />}
-            <table id="weatherDataTable" className="table is-striped is-fullwidth">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>City</th>
-                        <th>Future Date</th>
-                        <th>Temperature (°C)</th>
-                        <th>Humidity (%)</th>
-                        <th>Precipitation (mm)</th>
-                        <th>Wind Speed (Km/h)</th>
-                        <th>Wind Direction</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {forecastData.map((forecast, index) => (
-                        <tr key={forecast.id}>
-                            <td>{index + 1}</td>
-                            <td>{forecast.location.city}</td>
-                            <td>{moment(forecast.future_dates).format("DD.MM.YYYY | HH:mm")}</td>
-                            <td>{forecast.forecast_temperature} °C</td>
-                            <td>{forecast.forecast_humidity} %</td>
-                            <td>{forecast.forecast_precipitation} mm</td>
-                            <td>{forecast.forecast_windSpeed} Km/h</td>
-                            <td>{getWindDirection(forecast.forecast_windDirection)}</td>
+            <div className="table-container">
+                <table id="weatherDataTable" className="table is-striped is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>City</th>
+                            <th>Future Date</th>
+                            <th>Temperature (°C)</th>
+                            <th>Humidity (%)</th>
+                            <th>Precipitation (mm)</th>
+                            <th>Wind Speed (Km/h)</th>
+                            <th>Wind Direction</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {forecastData.map((forecast, index) => (
+                            <tr key={forecast.id}>
+                                <td>{index + 1}</td>
+                                <td>{forecast.location.city}</td>
+                                <td>{moment(forecast.future_dates).format("DD.MM.YYYY | HH:mm")}</td>
+                                <td>{forecast.forecast_temperature} °C</td>
+                                <td>{forecast.forecast_humidity} %</td>
+                                <td>{forecast.forecast_precipitation} mm</td>
+                                <td>{forecast.forecast_windSpeed} Km/h</td>
+                                <td>{getWindDirection(forecast.forecast_windDirection)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             <div className="control has-text-centered m-6">
                 <PDFGenerator
                     temperatureChartRef={temperatureChartRef}

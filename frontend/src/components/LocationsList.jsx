@@ -67,7 +67,7 @@ const LocationsList = () => {
     });
 
     return (
-        <div className="pr-3">
+        <div className="pl-2 pr-3">
             <h1 className="title">Locations list</h1>
             <div className="field">
                 <label className="label">Search by City name:</label>
@@ -109,34 +109,36 @@ const LocationsList = () => {
                     <button className="button is-info" onClick={AddLocation} disabled={!cityName}>Add Location</button>
                 </div>
             </div>
-            <table className="table is-striped is-fullwidth">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>City</th>
-                        <th>Country</th>
-                        <th>latitude</th>
-                        <th>Longitude</th>
-                        <th>Options</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredLocations.map((location, index) => (
-                        <tr key={location.uuid}>
-                            <td>{index + 1}</td>
-                            <td>{location.city}</td>
-                            <td>{location.country}</td>
-                            <td>{location.latitude}</td>
-                            <td>{location.longitude}</td>
-                            <td>
-                                <div className="Option">
-                                    <button onClick={() => deleteLocations(location.uuid, location.city)} className="button is-small is-danger">Delete</button>
-                                </div>
-                            </td>
+            <div className="table-container">
+                <table className="table is-striped is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th>latitude</th>
+                            <th>Longitude</th>
+                            <th>Options</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {filteredLocations.map((location, index) => (
+                            <tr key={location.uuid}>
+                                <td>{index + 1}</td>
+                                <td>{location.city}</td>
+                                <td>{location.country}</td>
+                                <td>{location.latitude}</td>
+                                <td>{location.longitude}</td>
+                                <td>
+                                    <div className="Option">
+                                        <button onClick={() => deleteLocations(location.uuid, location.city)} className="button is-small is-danger">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

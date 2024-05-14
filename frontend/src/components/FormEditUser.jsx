@@ -49,7 +49,7 @@ const FormEditUser = () => {
 		}
 	};
 	return (
-		<div>
+		<div className="pl-2">
 			<h1 className="title">Users</h1>
 			<h2 className="subtitle">Update user details</h2>
 			<div className="card is-shadowless">

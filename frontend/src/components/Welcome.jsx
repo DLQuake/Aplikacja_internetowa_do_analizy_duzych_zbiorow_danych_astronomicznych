@@ -96,7 +96,7 @@ const Welcome = () => {
     };
 
     return (
-        <div className="pr-3">
+        <div className="pl-2 pr-3">
             <h1 className="title">Weather Dashboard</h1>
             <div className="field">
                 <label className="label">Select a Location:</label>
@@ -140,7 +140,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(54, 162, 235, 0.1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions("Time","Humidity (%)")} />
+                            }} options={chartOptions("Time", "Humidity (%)")} />
                         </div>
                         <div className="column">
                             <h2>Precipitation</h2>
@@ -153,7 +153,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(75, 192, 192, 1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions("Time","Precipitation (mm)")} />
+                            }} options={chartOptions("Time", "Precipitation (mm)")} />
                         </div>
                     </div>
                     <div className="columns">
@@ -168,7 +168,7 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(255, 159, 64, 0.1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions("Time","Wind Speed (m/s)")} />
+                            }} options={chartOptions("Time", "Wind Speed (m/s)")} />
                         </div>
                         <div className="column">
                             <h2>Wind Direction</h2>
@@ -181,38 +181,40 @@ const Welcome = () => {
                                     backgroundColor: 'rgba(153, 102, 255, 1)',
                                     fill: true
                                 }]
-                            }} options={chartOptions("Time","Wind Direction (°)")} />
+                            }} options={chartOptions("Time", "Wind Direction (°)")} />
                         </div>
                     </div>
                     <div className="mt-5">
-                        <table className="table is-striped is-fullwidth">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>City</th>
-                                    <th>Date</th>
-                                    <th>Temperature (°C)</th>
-                                    <th>Humidity (%)</th>
-                                    <th>Precipitation (mm)</th>
-                                    <th>Wind Speed (Km/h)</th>
-                                    <th>Wind Direction</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {weatherData.map((weatherData, index) => (
-                                    <tr key={weatherData.uuid}>
-                                        <td>{index + 1}</td>
-                                        <td>{weatherData.location.city}</td>
-                                        <td>{moment(weatherData.date).format("DD.MM.YYYY | HH:mm")}</td>
-                                        <td>{weatherData.temperature} °C</td>
-                                        <td>{weatherData.humidity} %</td>
-                                        <td>{weatherData.precipitation} mm</td>
-                                        <td>{weatherData.windSpeed} Km/h</td>
-                                        <td>{getWindDirection(weatherData.windDirection)}</td>
+                        <div className="table-container">
+                            <table className="table is-striped is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>City</th>
+                                        <th>Date</th>
+                                        <th>Temperature (°C)</th>
+                                        <th>Humidity (%)</th>
+                                        <th>Precipitation (mm)</th>
+                                        <th>Wind Speed (Km/h)</th>
+                                        <th>Wind Direction</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {weatherData.map((weatherData, index) => (
+                                        <tr key={weatherData.uuid}>
+                                            <td>{index + 1}</td>
+                                            <td>{weatherData.location.city}</td>
+                                            <td>{moment(weatherData.date).format("DD.MM.YYYY | HH:mm")}</td>
+                                            <td>{weatherData.temperature} °C</td>
+                                            <td>{weatherData.humidity} %</td>
+                                            <td>{weatherData.precipitation} mm</td>
+                                            <td>{weatherData.windSpeed} Km/h</td>
+                                            <td>{getWindDirection(weatherData.windDirection)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             )}

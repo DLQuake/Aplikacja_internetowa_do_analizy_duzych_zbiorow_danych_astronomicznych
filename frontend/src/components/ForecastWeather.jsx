@@ -87,7 +87,7 @@ const ForecastWeather = () => {
     };
 
     return (
-        <div className="pr-3">
+        <div className="pl-2 pr-3">
             <h1 className="title">Forecast Weather</h1>
             <div className="field">
                 <label className="label">Select city to forecast weather:</label>
@@ -184,7 +184,7 @@ const ForecastWeather = () => {
                             fill: true
                         }]
                     }} options={chartOptions('Time', "Wind Direction (°)")} />
-                    <div className="mt-5">
+                    <div className="mt-5 table-container">
                         <table id="weatherDataTable" className="table is-striped is-fullwidth">
                             <thead>
                                 <tr>

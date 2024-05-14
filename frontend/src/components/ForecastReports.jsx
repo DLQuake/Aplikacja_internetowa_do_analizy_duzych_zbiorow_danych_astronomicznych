@@ -39,14 +39,14 @@ const ForecastReports = () => {
     };
 
     return (
-        <div className="pr-3">
+        <div className="pl-2 pr-3">
             <h1 className="title">Forecast Reports</h1>
             <div className="field">
                 <div className="control">
                     {loading ? (
                         <p className="title has-text-centered">Loading...</p>
                     ) : (
-                        <div>
+                        <div className="table-container">
                             <table className="table is-striped is-fullwidth" ref={tableRef}>
                                 <thead>
                                     <tr>

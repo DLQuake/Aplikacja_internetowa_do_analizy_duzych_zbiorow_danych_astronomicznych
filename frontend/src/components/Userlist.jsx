@@ -30,7 +30,7 @@ const Userlist = () => {
 	});
 
 	return (
-		<div className="pr-3">
+		<div className="pl-2 pr-3">
 			<h1 className="title">Users</h1>
 			<h2 className="subtitle">Search User</h2>
 			<div className="field">
@@ -69,33 +69,35 @@ const Userlist = () => {
 					</div>
 				</div>
 			</div>
-			<table className="table is-striped is-fullwidth">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Surname</th>
-						<th>Email</th>
-						<th>Role</th>
-						<th>Options</th>
-					</tr>
-				</thead>
-				<tbody>
-					{filteredUsers.map((user, index) => (
-						<tr key={user.uuid}>
-							<td>{index + 1}</td>
-							<td>{user.imie}</td>
-							<td>{user.nazwisko}</td>
-							<td>{user.email}</td>
-							<td>{user.role}</td>
-							<td>
-								<Link to={`/dashboard/users/edit/${user.uuid}`} className="button is-small is-info">Edit</Link>
-								<button onClick={() => deleteUser(user.uuid)} className="button is-small is-danger">Delete</button>
-							</td>
+			<div className="table-container">
+				<table className="table is-striped is-fullwidth">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Surname</th>
+							<th>Email</th>
+							<th>Role</th>
+							<th>Options</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{filteredUsers.map((user, index) => (
+							<tr key={user.uuid}>
+								<td>{index + 1}</td>
+								<td>{user.imie}</td>
+								<td>{user.nazwisko}</td>
+								<td>{user.email}</td>
+								<td>{user.role}</td>
+								<td>
+									<Link to={`/dashboard/users/edit/${user.uuid}`} className="button is-small is-info">Edit</Link>
+									<button onClick={() => deleteUser(user.uuid)} className="button is-small is-danger">Delete</button>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 };
