@@ -22,18 +22,9 @@ const Navbar = () => {
 					<NavLink to="/dashboard" className="navbar-item">
 						<div class="title">LOGO</div>
 					</NavLink>
-
-					<a href="#" role="button" className={`navbar-burger ${burgerActive ? "is-active" : ""}`}
-						aria-label="menu" aria-expanded="false"
-						data-target="navbarBasicExample"
-						onClick={() => setBurgerActive(!burgerActive)}>
-						<span aria-hidden="true"></span>
-						<span aria-hidden="true"></span>
-						<span aria-hidden="true"></span>
-					</a>
 				</div>
 
-				<div id="navbarBasicExample" className="navbar-menu">
+				<div id="navbarBasicExample" className='navbar-menu'>
 					<div className="navbar-end">
 						<div className="navbar-item">
 							Good morning &nbsp; <strong>{user && user.role}</strong>
