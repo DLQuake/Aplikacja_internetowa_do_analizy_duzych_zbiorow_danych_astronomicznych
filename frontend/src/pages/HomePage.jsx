@@ -69,42 +69,42 @@ const HomePage = () => {
                     <h2 className="title is-2 has-text-centered">Current Weather in {currentWeather.location.city} for {moment(currentWeather.date).format("DD.MM.YYYY | HH:mm")}</h2>
                     <div className="columns is-multiline">
                         <div className="column is-full">
-                            <div className="card has-background-link has-text-white has-text-centered">
+                            <div className="card has-background-link has-text-centered">
                                 <div className="card-content">
-                                    <p className="title is-2">Temperature</p>
-                                    <p className="title is-1">{currentWeather.temperature} °C</p>
+                                    <p className="title is-2 has-text-white">Temperature</p>
+                                    <p className="title is-1 has-text-white">{currentWeather.temperature} °C</p>
                                 </div>
                             </div>
                         </div>
                         <div className="column is-half">
-                            <div className="card has-background-primary has-text-white has-text-centered">
+                            <div className="card has-background-primary has-text-centered">
                                 <div className="card-content">
-                                    <p className="title is-2">Humidity</p>
-                                    <p className="title is-1">{currentWeather.humidity} %</p>
+                                    <p className="title is-2 has-text-white">Humidity</p>
+                                    <p className="title is-1 has-text-white">{currentWeather.humidity} %</p>
                                 </div>
                             </div>
                         </div>
                         <div className="column is-half">
-                            <div className="card has-background-warning has-text-black has-text-centered">
+                            <div className="card has-background-warning has-text-centered">
                                 <div className="card-content">
-                                    <p className="title is-2">Precipitation</p>
-                                    <p className="title is-1">{currentWeather.precipitation} mm</p>
+                                    <p className="title is-2 has-text-white">Precipitation</p>
+                                    <p className="title is-1 has-text-white">{currentWeather.precipitation} mm</p>
                                 </div>
                             </div>
                         </div>
                         <div className="column is-half">
-                            <div className="card has-background-danger has-text-white has-text-centered">
+                            <div className="card has-background-danger has-text-centered">
                                 <div className="card-content">
-                                    <p className="title is-2">Wind Speed</p>
-                                    <p className="title is-1">{currentWeather.windSpeed} Km/h</p>
+                                    <p className="title is-2 has-text-white ">Wind Speed</p>
+                                    <p className="title is-1 has-text-white">{currentWeather.windSpeed} Km/h</p>
                                 </div>
                             </div>
                         </div>
                         <div className="column is-half">
-                            <div className="card has-background-success has-text-white has-text-centered">
+                            <div className="card has-background-success has-text-centered">
                                 <div className="card-content">
-                                    <p className="title is-2">Wind Direction</p>
-                                    <p className="title is-1">{getWindDirection(currentWeather.windDirection)}</p>
+                                    <p className="title is-2 has-text-white">Wind Direction</p>
+                                    <p className="title is-1 has-text-white">{getWindDirection(currentWeather.windDirection)}</p>
                                 </div>
                             </div>
                         </div>
