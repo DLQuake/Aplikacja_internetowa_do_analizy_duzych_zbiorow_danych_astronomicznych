@@ -24,7 +24,7 @@ const NavbarHome = () => {
             <div id="navbarBasicExample" className={`navbar-menu ${burgerActive ? "is-active" : ""}`}>
                 <div class="navbar-start ">
                     <Link to="/" class="navbar-item">Home Page</Link>
-                    <Link to="/aboutus" class="navbar-item">About Us</Link>
+                    <Link to="/aboutus" class="navbar-item">About Company</Link>
                     <Link to="/aboutapp" class="navbar-item">About App</Link>
                     <Link to="/contact" class="navbar-item">Contact</Link>
                 </div>
