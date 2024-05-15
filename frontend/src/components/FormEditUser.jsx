@@ -48,6 +48,7 @@ const FormEditUser = () => {
 			}
 		}
 	};
+
 	return (
 		<div className="pl-2">
 			<h1 className="title">Users</h1>
