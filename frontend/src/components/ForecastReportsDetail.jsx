@@ -133,15 +133,15 @@ const ForecastReportsDetail = () => {
             </div>
             <h1 className="title has-text-centered">Report from forecasting weather for "{report && report.title.split(" ").pop()}"</h1>
             <h2>Temperature</h2>
-            {temperatureChartData && <Line ref={temperatureChartRef} data={temperatureChartData} options={chartOptions("Time", "Temperature (°C)")} />}
+            {temperatureChartData && <Line ref={temperatureChartRef} data={temperatureChartData} options={chartOptions("Date", "Temperature (°C)")} />}
             <h2>Humidity</h2>
-            {humidityChartData && <Line ref={humidityChartRef} data={humidityChartData} options={chartOptions("Time", "Humidity (%)")} />}
+            {humidityChartData && <Line ref={humidityChartRef} data={humidityChartData} options={chartOptions("Date", "Humidity (%)")} />}
             <h2>Precipitation</h2>
-            {precipitationChartData && <Bar ref={precipitationChartRef} data={precipitationChartData} options={chartOptions("Time", "Precipitation (mm)")} />}
+            {precipitationChartData && <Bar ref={precipitationChartRef} data={precipitationChartData} options={chartOptions("Date", "Precipitation (mm)")} />}
             <h2>Wind Speed</h2>
-            {windSpeedChartData && <Line ref={windSpeedChartRef} data={windSpeedChartData} options={chartOptions("Time", "Wind Speed (Km/h)")} />}
+            {windSpeedChartData && <Line ref={windSpeedChartRef} data={windSpeedChartData} options={chartOptions("Date", "Wind Speed (Km/h)")} />}
             <h2>Wind Direction</h2>
-            {windDirectionChartData && <Bar ref={windDirectionChartRef} data={windDirectionChartData} options={chartOptions("Time", "Wind Direction")} />}
+            {windDirectionChartData && <Bar ref={windDirectionChartRef} data={windDirectionChartData} options={chartOptions("Date", "Wind Direction")} />}
             <div className="table-container">
                 <table id="weatherDataTable" className="table is-striped is-fullwidth">
                     <thead>

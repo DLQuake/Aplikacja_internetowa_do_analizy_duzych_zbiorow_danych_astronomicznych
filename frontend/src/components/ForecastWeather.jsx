@@ -139,7 +139,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(255, 99, 132, 0.1)',
                             fill: true
                         }]
-                    }} options={chartOptions('Time', "Temperature (°C)")} />
+                    }} options={chartOptions('Date', "Temperature (°C)")} />
                     <h2>Humidity</h2>
                     <Line ref={humidityChartRef} data={{
                         labels: weatherData.future_dates,
@@ -150,7 +150,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
                             fill: true
                         }]
-                    }} options={chartOptions('Time', "Humidity (%)")} />
+                    }} options={chartOptions('Date', "Humidity (%)")} />
                     <h2>Precipitation</h2>
                     <Bar ref={precipitationChartRef} data={{
                         labels: weatherData.future_dates,
@@ -161,7 +161,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(75, 192, 192, 1)',
                             fill: true
                         }]
-                    }} options={chartOptions('Time', "Precipitation (mm)")} />
+                    }} options={chartOptions('Date', "Precipitation (mm)")} />
                     <h2>Wind Speed</h2>
                     <Line ref={windSpeedChartRef} data={{
                         labels: weatherData.future_dates,
@@ -172,7 +172,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(255, 159, 64, 0.1)',
                             fill: true
                         }]
-                    }} options={chartOptions('Time', "Wind Speed (m/s)")} />
+                    }} options={chartOptions('Date', "Wind Speed (m/s)")} />
                     <h2>Wind Direction</h2>
                     <Bar ref={windDirectionChartRef} data={{
                         labels: weatherData.future_dates,
@@ -183,7 +183,7 @@ const ForecastWeather = () => {
                             backgroundColor: 'rgba(153, 102, 255, 1)',
                             fill: true
                         }]
-                    }} options={chartOptions('Time', "Wind Direction (°)")} />
+                    }} options={chartOptions('Date', "Wind Direction (°)")} />
                     <div className="mt-5 table-container">
                         <table id="weatherDataTable" className="table is-striped is-fullwidth">
                             <thead>
