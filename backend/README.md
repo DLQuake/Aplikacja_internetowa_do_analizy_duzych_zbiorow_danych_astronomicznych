@@ -66,4 +66,4 @@ Przykład poniżej
 4. Nacisnąć przycisk `Send`,
 5. Po pomyślnym wykonaniu poleceń powinien się wyświetlić komunikat ze pomyślnie dodano użytkownika.
 
-![alt text](image.png)
+![alt text](../images/ScreenPostman.png)
