@@ -109,9 +109,12 @@ const WeatherdatasList = () => {
                     />
                 </div>
             </div>
-            <div className="field">
+            <div className="field is-grouped">
                 <div className="control">
                     <button className="button is-link" onClick={searchWeatherData}>Apply Filters</button>
+                </div>
+                <div className="control">
+                    <button className="button is-primary" onClick={refreshData}>Refresh Data</button>
                 </div>
             </div>
             <div className="field">
@@ -120,7 +123,6 @@ const WeatherdatasList = () => {
                         <p className="title has-text-centered">Loading...</p>
                     ) : (
                         <div>
-                            <button className="button is-primary" onClick={refreshData}>Refresh Data</button>
                             <div className="table-container">
                                 <table className="table is-striped is-fullwidth" ref={tableRef}>
                                     <thead>
