@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const NavbarHome = () => {
     const [burgerActive, setBurgerActive] = useState(false)
     return (
-        <nav class="navbar" role="navigation" aria-label="main navigation">
+        <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation" style={{ borderBottom: "2px solid #1F2229" }}>
             <div class="navbar-brand">
                 <Link class="navbar-item" href="/">
                     <div class="title">LOGO</div>
