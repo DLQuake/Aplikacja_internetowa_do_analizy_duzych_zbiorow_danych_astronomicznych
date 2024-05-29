@@ -6,7 +6,7 @@ const AboutUs = () => {
     return (
         <React.Fragment>
             <NavbarHome />
-            <section className="section">
+            <section className="section mt-6">
                 <div class="content">
                     <h1 className="title is-1 has-text-centered">About Us</h1>
                 </div>

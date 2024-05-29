@@ -7,7 +7,9 @@ const ContactHome = () => {
     return (
         <React.Fragment>
             <NavbarHome />
-            <ContactForm />
+            <div className="mt-6">
+                <ContactForm />
+            </div>
             <FooterHome />
         </React.Fragment>
     );

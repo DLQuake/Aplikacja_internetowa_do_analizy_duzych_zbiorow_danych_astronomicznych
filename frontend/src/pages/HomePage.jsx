@@ -44,7 +44,7 @@ const HomePage = () => {
     return (
         <React.Fragment>
             <NavbarHome />
-            <section className="section">
+            <section className="section mt-6">
                 <div className="content">
                     <h1 className="title is-1 has-text-centered">Welcome to the Weather Dashboard</h1>
                     <h1 className="subtitle has-text-centered">Choose a city and check a weather</h1>

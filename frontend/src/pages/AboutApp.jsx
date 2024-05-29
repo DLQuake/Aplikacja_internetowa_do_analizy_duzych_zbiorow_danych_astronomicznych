@@ -7,7 +7,7 @@ const AboutApp = () => {
     return (
         <React.Fragment>
             <NavbarHome />
-            <section className="section">
+            <section className="section mt-6">
                 <div className="content subtitle has-text-justified">
                     <h2 className="title is-2 has-text-centered">About the App</h2>
                     <p className="box">
