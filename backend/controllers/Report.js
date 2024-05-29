@@ -4,8 +4,11 @@ import Forecast from '../models/ForecastModel.js';
 
 export const getAllreport = async (req, res) => {
     try {
-        const report = await Report.findAll({
+        let report = await Report.findAll({
             attributes: ['uuid', 'title', 'reportDate'],
+            where: {
+                userId: req.userId
+            },
             include: [{
                 model: Users,
                 attributes: ['uuid', 'imie', 'nazwisko', 'email', 'role']
