@@ -17,7 +17,7 @@ const Navbar = () => {
 
 	return (
 		<div>
-			<nav className="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+			<nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation" style={{ borderBottom: "2px solid #1F2229" }}>
 				<div className="navbar-brand">
 					<NavLink to="/dashboard" className="navbar-item">
 						<div class="title">LOGO</div>
@@ -27,7 +27,7 @@ const Navbar = () => {
 				<div id="navbarBasicExample" className='navbar-menu'>
 					<div className="navbar-end">
 						<div className="navbar-item">
-							Good morning &nbsp; <strong>{user && user.role}</strong>
+							Good morning &nbsp; <strong>{user && user.imie} {user && user.nazwisko}</strong>
 						</div>
 						<div className="navbar-item">
 							<div className="buttons">
