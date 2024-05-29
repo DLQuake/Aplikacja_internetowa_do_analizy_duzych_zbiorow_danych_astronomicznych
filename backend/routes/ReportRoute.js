@@ -4,11 +4,12 @@ import {
     getAllreport,
     getReportById
 } from "../controllers/Report.js";
+import { verifyUser } from "../middleware/AuthUser.js";
 
 const router = express.Router();
 
-router.get('/report', getAllreport);
-router.get('/report/:id', getReportById);
-router.delete("/report/:id", deleteReport);
+router.get('/report',verifyUser, getAllreport);
+router.get('/report/:id',verifyUser, getReportById);
+router.delete("/report/:id",verifyUser, deleteReport);
 
 export default router;
