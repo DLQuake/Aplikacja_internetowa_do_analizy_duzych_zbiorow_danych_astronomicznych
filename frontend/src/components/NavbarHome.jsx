@@ -10,6 +10,7 @@ const NavbarHome = () => {
                     <div class="title">LOGO</div>
                 </Link>
 
+                {/* eslint-disable-next-line */}
                 <a href="#" role="button" className={`navbar-burger ${burgerActive ? "is-active" : ""}`}
                     aria-label="menu" aria-expanded="false"
                     data-target="navbarBasicExample"
