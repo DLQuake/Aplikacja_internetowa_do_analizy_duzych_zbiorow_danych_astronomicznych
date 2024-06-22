@@ -19,6 +19,7 @@
         DB_PASSWORD = hasło dla użytkownika postgres
         DB_HOST = localhost
         DB_DIALECT = postgres
+        DB_SSL_REQUIRE = true lub false w zależności czy jest wymagane czy nie
         ```
 
     * Stworzenie bazy danych w PostgreSQL o nazwie "weather_dashboard_db". Polecam do tego narzędzie `pgAdmin`
