@@ -6,7 +6,7 @@ const NavbarHome = () => {
     return (
         <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation" style={{ borderBottom: "2px solid #1F2229" }}>
             <div class="navbar-brand">
-                <Link class="navbar-item" href="/">
+                <Link class="navbar-item" to="/">
                     <div class="title">LOGO</div>
                 </Link>
 
