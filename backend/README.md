@@ -12,10 +12,11 @@
     * Stworzenie pliku `.env` oraz wklejenie poniżeszego kodu
         ```dosini
         APP_PORT = 5000
-        SESS_SECRET = lososwy ciąg znaków
+        APP_FLASK_PORT = 5001
+        SESS_SECRET = losowy ciąg znaków
         DB_NAME = weather_dashboard_db
         DB_USER = postgres
-        DB_PASSWORD = gl90mast
+        DB_PASSWORD = hasło dla użytkownika postgres
         DB_HOST = localhost
         DB_DIALECT = postgres
         ```
