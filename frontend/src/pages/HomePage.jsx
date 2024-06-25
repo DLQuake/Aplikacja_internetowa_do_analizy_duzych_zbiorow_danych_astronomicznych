@@ -64,7 +64,7 @@ const HomePage = () => {
                     </div>
                 </div>
             </section>
-            {currentWeather && (
+            {currentWeather ? (
                 <section className="section">
                     <h2 className="title is-2 has-text-centered">Current Weather in {currentWeather.location.city} for {moment(currentWeather.date).format("DD.MM.YYYY | HH:mm")}</h2>
                     <div className="columns is-multiline">
@@ -95,7 +95,7 @@ const HomePage = () => {
                         <div className="column is-half">
                             <div className="card has-background-danger has-text-centered">
                                 <div className="card-content">
-                                    <p className="title is-2 has-text-white ">Wind Speed</p>
+                                    <p className="title is-2 has-text-white">Wind Speed</p>
                                     <p className="title is-1 has-text-white">{currentWeather.windSpeed} Km/h</p>
                                 </div>
                             </div>
@@ -109,6 +109,10 @@ const HomePage = () => {
                             </div>
                         </div>
                     </div>
+                </section>
+            ) : (
+                <section className="section">
+                    <h2 className="title is-2 has-text-centered">No weather data available for {selectedCity}</h2>
                 </section>
             )}
             <FooterHome />
