@@ -153,7 +153,6 @@ const WeatherdatasList = () => {
                                     </tbody>
                                 </table>
                             </div>
-                            <button className="button is-primary" onClick={refreshData}>Refresh Data</button>
                         </div>
                     )}
                 </div>
