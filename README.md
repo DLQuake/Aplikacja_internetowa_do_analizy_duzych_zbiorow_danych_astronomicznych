@@ -1,4 +1,4 @@
-# Aplikacja internetowa do analizy danych pogodowych w celu przewidzenia prognozy pogody
+# Implementacja aplikacji internetowej do analizy danych pogodowych w celu przewidzenia prognozy pogody
 
 Temat pracy magisterskiej polegający na stworzeniu aplikacji internetowej, która będzie wykorzystana do analizy dużych zbiorów danych pogodowych.
 
@@ -15,7 +15,7 @@ Temat pracy magisterskiej polegający na stworzeniu aplikacji internetowej, któ
 
 ## Krótki opis repozytorium
 
-W tym repozytorium powstała aplikacja internetowa, która umożliwi analizę danych pogodowych poprzez wykorzystanie dostępny narzędzi oraz umożliwi wizualizacje danych za pomocą wykresów.
+W tym repozytorium powstała aplikacja internetowa, która umożliwia analizę danych pogodowych poprzez wykorzystanie dostępnych narzędzi oraz umożliwi wizualizacje danych za pomocą wykresów.
 
 ## Technologie jakie zostały użyte do pracy
 
@@ -24,6 +24,7 @@ W tym repozytorium powstała aplikacja internetowa, która umożliwi analizę da
 - Bazy danych: [PostgreSQL](https://www.postgresql.org/)
 
 ## Koncepcja aplikacji
+
 Do wykonania był projekt aplikacji internetowej Do analizy danych pogodowych. zapewnienie użytkownikom możliwości dostępu do aktualnych i historycznych danych pogodowych, a także ich analizy za pomocą zaawansowanych algorytmów przetwarzania danych. W tym celu powstała właśnie ta aplikacja by rozwiązać przedstawiony problem.
 
 ### Lista aktorów
@@ -66,9 +67,11 @@ Reszta informacji znajduje się w dokumentacji w rozdziale [Dokumentacja](#dokum
 
 ## Dokumentacja
 
-Dokumentacja, która jest w trakcie pisania znajduje pod tym linkiem -> [LINK](https://github.com/DLQuake/Weather-Dashboard/tree/main/Dokumentacja)
+Dokumentacja początkowa znajduje się w postaci pliku PDF pod tym linkiem -> [LINK](https://github.com/DLQuake/Weather-Dashboard/tree/main/Dokumentacja/Pocz%C4%85tkowa/Dokumentacja_pocz%C4%85tkowa.pdf)
 
-W folderze dokumentacja znajduję sie plik Microsoft Word, lecz z czasem sie pojawi PDF
+Dokumentacja końcowa znajduje sie w postaci pliku PDF pod tym linkiem -> [LINK](https://github.com/DLQuake/Weather-Dashboard/blob/main/Dokumentacja/Ko%C5%84cowa/Dokumentacja_ko%C5%84cowa.pdf)
+
+W folderze dokumentacja znajdują sie także pliki Microsoft Word, które można pobrać.
 
 ## Pobranie i Klonowanie
 Można pobrać repozytorium na dwa sposoby:
